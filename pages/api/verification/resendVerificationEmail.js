@@ -16,7 +16,7 @@ const resend = async (req, res) => {
     const emailToken = await EmailTokenModel.findOne({ userId: _id })
     if (!emailToken) return res.status(400).send("You're already verified!")
 
-    const sent = await axios.post("http://localhost:3000/api/verification/sendVerificationEmail", {
+    const sent = await axios.post(`${process.env.BASE_URL}/api/verification/sendVerificationEmail`, {
       email: user.email,
       emailToken: emailToken.token
     })

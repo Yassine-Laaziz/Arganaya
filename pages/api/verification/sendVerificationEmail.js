@@ -19,7 +19,7 @@ const sendVerificationEmail = async (req, res) => {
       to: email,
       subject: "Activate Arganaya Account",
       html: `
-        <p>click the following link to verify: <a href="/verify?emailToken=${emailToken}">Verify</a></p>
+        <p>click the following link to verify: <a href="${process.env.BASE_URL}/verify?emailToken=${emailToken}">Verify</a></p>
       `,
     })
     res.status(200).send("email sent succefully")

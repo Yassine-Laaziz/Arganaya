@@ -8,7 +8,7 @@ const emailTokenSchema = new Schema({
     unique: true,
   },
   token: {type: String, required: true},
-  createdAt: {type: Date, default: Date.now()}
+  createdAt: {type: Date, default: Date.now(), expires: '150m'}
 })
 
 const EmailTokenModel = models.emailToken || model("emailToken", emailTokenSchema)

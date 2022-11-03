@@ -82,7 +82,7 @@ const handler = async (req, res) => {
       token: crypto.randomBytes(32).toString("hex"),
     })
 
-    await axios.post("http://localhost:3000/api/verification/sendVerificationEmail", {
+    await axios.post(`${process.env.BASE_URL}/api/verification/sendVerificationEmail`, {
       email: User.email,
       emailToken: emailToken.token
     })
