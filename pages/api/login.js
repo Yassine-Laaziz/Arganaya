@@ -17,7 +17,7 @@ const handler = async (req, res) => {
     const user = await UserModel.findOne({ email })
     if (!user) return res.status(404).send("Incorrect email!")
 
-    // 2 Correct password ?
+    // 3 Correct password ?
     const match = await bcrypt.compare(password, user.password)
     if (!match) return res.status(422).send("Incorrect password!")
 

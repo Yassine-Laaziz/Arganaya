@@ -76,7 +76,6 @@ const handler = async (req, res) => {
     res.status(200).send(jwtToken)
 
     // function continues to send email after response..
-    // Email activation
     const emailToken = await EmailTokenModel.create({
       userId: User._id,
       token: crypto.randomBytes(32).toString("hex"),

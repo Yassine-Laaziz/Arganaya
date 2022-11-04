@@ -13,15 +13,25 @@ const resend = async (req, res) => {
     if (!user) return res.status(400).send("something went wrong!")
     if (user.verified) return res.status(200).send("You're already verified!")
 
-    const emailToken = await EmailTokenModel.findOne({ userId: _id })
-    if (!emailToken) return res.status(400).send("You're already verified!")
+    let emailToken
+    const foundToken = await EmailTokenModel.findOne({ userId: _id })
+    if (foundToken) emailToken = foundToken
+    else // here we create another token incase user's past token expired
+      emailToken = await EmailTokenModel.create({
+        userId: _id,
+        token: crypto.randomBytes(32).toString("hex"),
+      })
 
-    const sent = await axios.post(`${process.env.BASE_URL}/api/verification/sendVerificationEmail`, {
-      email: user.email,
-      emailToken: emailToken.token
-    })
-    if (!sent) res.status(200).json("Email sent Successfully ")
+    const sent = await axios.post(
+      `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
+      {
+        email: user.email,
+        emailToken: emailToken.token,
+      }
+    )
+    if (sent) res.status(200).json("Email sent Successfully ")
   } catch (e) {
+    console.log('from resend: ' + e)
     res.status(400).send("something went wrong!")
   }
 }

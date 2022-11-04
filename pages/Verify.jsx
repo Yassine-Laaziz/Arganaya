@@ -1,4 +1,4 @@
-import styles from '../styles/Verify.module.css'
+import styles from "../styles/Verify.module.css"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import axios from "axios"
@@ -43,20 +43,11 @@ const Verify = () => {
     }
   }, [emailToken, email]) // the query property doesn't load on first render
 
-  useEffect(() => {
-    // an email is already sent when the user is signed up  and we don't want to send another
-    // one each time we reload the page, because it might be automated and we'll lose requests
-    toast.success("An email was sent to your account, please Verify!", {
-      duration: 8000,
-      style: { textAlign: "center" },
-    })
-  }, [])
-
   // creating a countdown until the user is allowed to get another email.
-  const [passed, setPassed] = useState(20)
+  const [remaining, setRemaining] = useState(40)
   useEffect(() => {
     const timer = setInterval(() => {
-      setPassed((prev) => prev + 1)
+      setRemaining((prev) => prev - 1)
     }, 1000)
 
     return () => clearInterval(timer)
@@ -64,8 +55,8 @@ const Verify = () => {
 
   const resend = async () => {
     try {
-      if (passed > 60) {
-        setPassed(0)
+      if (remaining <= 0) {
+        setRemaining(60)
         const response = await axios.post(
           "/api/verification/resendVerificationEmail",
           { jwtToken: localStorage.getItem("token") }
@@ -80,7 +71,7 @@ const Verify = () => {
           style: { textAlign: "center", color: "green" },
         })
       } else {
-        toast.error(`Too many requests! wait for ${60 - passed} seconds `)
+        toast.error(`Too many requests! wait for ${remaining} seconds `)
       }
     } catch (e) {
       toast.error("something went wrong we're unable to email you the link", {
