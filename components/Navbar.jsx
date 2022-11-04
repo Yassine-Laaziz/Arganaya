@@ -18,10 +18,13 @@ const Navbar = () => {
 
   const [display, setDisplay] = useState("none")
 
-  window.addEventListener(
-    "click",
-    () => display === "flex" && setDisplay("none")
-  )
+  useEffect(() => {
+    // this is wrapped in useEffect because "window" is not defined at first
+    window.addEventListener(
+      "click",
+      () => display === "flex" && setDisplay("none")
+    )
+  }, [])
 
   const [token, setToken] = useState(false)
   useEffect(() => setToken(localStorage.getItem("token")), [])

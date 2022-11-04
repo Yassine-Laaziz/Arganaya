@@ -15,7 +15,6 @@ const Cart = () => {
     totalPrice,
     totalQuantities,
     cartItems,
-    showCart,
     setShowCart,
     toggleCartItemQuantity,
     onRemove,
@@ -35,7 +34,10 @@ const Cart = () => {
     }, 300)
   }
 
-  window.addEventListener("click", () => showCart && closeCart())
+  useEffect(() => {
+    // this is wrapped in useEffect because "window" is not defined at first
+    window.addEventListener("click", () => showCart && closeCart())
+  }, [])
 
   return (
     <div className="cart-wrapper">
