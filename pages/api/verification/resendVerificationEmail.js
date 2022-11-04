@@ -31,8 +31,7 @@ const resend = async (req, res) => {
     )
     if (sent) res.status(200).json("Email sent Successfully ")
   } catch (e) {
-    console.log('from resend: ' + e)
-    res.status(400).send("something went wrong!")
+    res.status(400).send('from resend: ' + e)
   }
 }
 

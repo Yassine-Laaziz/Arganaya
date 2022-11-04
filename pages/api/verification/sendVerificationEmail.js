@@ -24,8 +24,7 @@ const sendVerificationEmail = async (req, res) => {
     })
     res.status(200).send("email sent succefully")
   } catch (error) {
-    console.log('from send: ' + e)
-    res.status(400).send("email not sent")
+    res.status(400).send('from send: ' + e)
   }
 }
 export default sendVerificationEmail

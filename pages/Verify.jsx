@@ -62,6 +62,8 @@ const Verify = () => {
           { jwtToken: localStorage.getItem("token") }
         )
 
+        console.log(response)
+
         if (!response)
           return toast.error(
             "something went wrong we're unable to email you the link"
