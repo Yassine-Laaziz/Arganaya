@@ -45,7 +45,8 @@ const handler = async (req, res) => {
 
     // 3 is already Created ?
     const exists = await UserModel.findOne({ email })
-    if (exists.verified) return res.status(422).send("Account Already Registered!")
+    if (exists.verified)
+      return res.status(422).send("Account Already Registered!")
 
     // password & confirm password the same?
     if (user.password !== user.confirmPassword) {
@@ -81,10 +82,13 @@ const handler = async (req, res) => {
       token: crypto.randomBytes(32).toString("hex"),
     })
 
-    await axios.post(`${process.env.BASE_URL}/api/verification/sendVerificationEmail`, {
-      email: User.email,
-      emailToken: emailToken.token
-    })
+    // await axios.post(
+    //   `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
+    //   {
+    //     email: User.email,
+    //     emailToken: emailToken.token,
+    //   }
+    // )
   } catch (error) {
     res.status(400).send("Something went wrong! Please Retry or Check later")
   }
