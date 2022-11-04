@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"
 import EmailTokenModel from "../../../models/Token"
 import UserModel from "../../../models/Users"
 import axios from "axios"
+import crypto from 'crypto'
 
 const resend = async (req, res) => {
   try {

@@ -45,7 +45,7 @@ const handler = async (req, res) => {
 
     // 3 is already Created ?
     const exists = await UserModel.findOne({ email })
-    if (exists) return res.status(422).send("Account Already Registered!")
+    if (exists.verified) return res.status(422).send("Account Already Registered!")
 
     // password & confirm password the same?
     if (user.password !== user.confirmPassword) {

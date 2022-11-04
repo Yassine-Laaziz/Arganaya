@@ -10,12 +10,12 @@ import { TiDeleteOutline } from "react-icons/ti"
 import { useStateContext } from "../context/StateContext"
 import { urlFor } from "../lib/client"
 
-
 const Cart = () => {
   const {
     totalPrice,
     totalQuantities,
     cartItems,
+    showCart,
     setShowCart,
     toggleCartItemQuantity,
     onRemove,
@@ -34,6 +34,8 @@ const Cart = () => {
       setShowCart(false)
     }, 300)
   }
+
+  window.addEventListener("click", () => showCart && closeCart())
 
   return (
     <div className="cart-wrapper">
