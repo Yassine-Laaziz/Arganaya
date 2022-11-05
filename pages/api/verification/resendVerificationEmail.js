@@ -23,14 +23,14 @@ const resend = async (req, res) => {
         token: crypto.randomBytes(32).toString("hex"),
       })
 
-    const sent = await axios.post(
+    await axios.post(
       `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
       {
         email: user.email,
         emailToken: emailToken.token,
       }
     )
-    if (sent) res.status(200).json("Email sent Successfully ")
+    res.status(200).json("Email sent Successfully ")
   } catch (e) {
     res.status(400).send('from resend: ' + e)
   }
