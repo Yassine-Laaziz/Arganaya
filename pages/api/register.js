@@ -44,9 +44,12 @@ const handler = async (req, res) => {
       return res.status(422).send("email is not valid!")
 
     // 3 is already Created ?
+    // here we check if there is a verified user with the same email account
     const exists = await UserModel.findOne({ email })
-    if (exists.verified)
+    if (exists && exists.verified)
       return res.status(422).send("Account Already Registered!")
+    else if (exists && !exists.verified)
+      await UserModel.findByIdAndDelete(exists._id)
 
     // password & confirm password the same?
     if (user.password !== user.confirmPassword) {
@@ -77,18 +80,18 @@ const handler = async (req, res) => {
     res.status(200).send(jwtToken)
 
     // function continues to send email after response..
-    const emailToken = await EmailTokenModel.create({
+    const emailToken = EmailTokenModel.create({
       userId: User._id,
       token: crypto.randomBytes(32).toString("hex"),
     })
 
-    // await axios.post(
-    //   `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
-    //   {
-    //     email: User.email,
-    //     emailToken: emailToken.token,
-    //   }
-    // )
+    axios.post(
+      `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
+      {
+        email: User.email,
+        emailToken: emailToken.token,
+      }
+    )
   } catch (error) {
     res.status(400).send("Something went wrong! Please Retry or Check later")
   }

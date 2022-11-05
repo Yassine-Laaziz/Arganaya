@@ -46,6 +46,10 @@ const SignUp = () => {
       .post(`/api/register`, data)
       .then((res) => {
         localStorage.setItem("token", JSON.stringify(res.data))
+        toast.success('Email Sent Successfully', {
+          style: { textAlign: "center", color: "green" },
+          duration: 10000,
+        })
         router.push("/Verify")
       })
       .catch((err) => {
