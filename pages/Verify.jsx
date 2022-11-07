@@ -11,19 +11,23 @@ import {
 
 const Verify = () => {
   const router = useRouter()
-  const { emailToken, email } = router.query
+  const { emailToken } = router.query
   const [info, setInfo] = useState({})
 
   useEffect(() => {
     const jwtToken = localStorage.getItem("token")
     axios
       .post("/api/checkAuthorized", { jwtToken })
-      .then((res) => !res.data.user && router.push("Login"))
+      .then((res) => {
+        if (!res.data.user) router.push("Login")
+        if (res.data.verified)
+          setInfo({ message: "You're already verified!", status: "Success" })
+      })
       .catch((res) => !res.user && router.push("/Login"))
   }, [])
 
   useEffect(() => {
-    if (emailToken && email) {
+    if (emailToken) {
       axios
         .get(`/api/verification/verify?emailToken=${emailToken}`)
         .then((res) => setInfo(res.data))
@@ -41,7 +45,7 @@ const Verify = () => {
         status: "Pending..",
       })
     }
-  }, [emailToken, email]) // the query property doesn't load on first render
+  }, [emailToken]) // the query property doesn't load on first render
 
   // creating a countdown until the user is allowed to get another email.
   const [remaining, setRemaining] = useState(40)
@@ -55,30 +59,24 @@ const Verify = () => {
 
   const resend = async () => {
     try {
-      if (remaining <= 0) {
+      if (remaining <= 60) {
         setRemaining(60)
         const response = await axios.post(
           "/api/verification/resendVerificationEmail",
           { jwtToken: localStorage.getItem("token") }
         )
-
-        console.log(response)
-
         if (!response)
-          return toast.error(
-            "something went wrong we're unable to email you the link"
-          )
+          return setInfo({
+            message: "something went wrong click the 'Resend' Button or try again later",
+            status: "Error",
+          })
 
-        toast.success(response.data, {
-          style: { textAlign: "center", color: "green" },
-        })
+        setInfo(response.data)
       } else {
         toast.error(`Too many requests! wait for ${remaining} seconds `)
       }
     } catch (e) {
-      toast.error("something went wrong we're unable to email you the link", {
-        style: { textAlign: "center" },
-      })
+      setInfo(e)
     }
   }
 
@@ -115,7 +113,7 @@ const Verify = () => {
         )}
         {/* if is pending*/}
         {info.status === "Pending.." && (
-          <button onClick={() => resend()}>resend</button>
+          <button onClick={() => resend()}>Resend</button>
         )}
       </div>
     </div>

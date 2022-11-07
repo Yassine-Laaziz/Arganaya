@@ -1,9 +1,9 @@
 import { connect } from "../../lib/mongodb"
 import UserModel from "../../models/Users"
+import EmailTokenModel from "../../models/Token"
 import bcrypt from "bcrypt"
 import validator from "validator"
 import createToken from "../../lib/createToken"
-import EmailTokenModel from "../../models/Token"
 import crypto from "crypto"
 import axios from "axios"
 
@@ -12,8 +12,7 @@ const handler = async (req, res) => {
     connect()
     //for more security
     const user = {
-      name: req.body.name,
-      lastName: req.body.lastName,
+      lastName: req.body.fullName,
       number: req.body.number,
       email: req.body.email,
       addressLine1: req.body.addressLine1,
@@ -24,8 +23,7 @@ const handler = async (req, res) => {
     // validation
     // 1 all fields required ?
     if (
-      !user.name ||
-      !user.lastName ||
+      !user.fullName ||
       !user.number ||
       !user.email ||
       !user.email ||
@@ -80,17 +78,14 @@ const handler = async (req, res) => {
     res.status(200).send(jwtToken)
 
     // function continues to send email after response..
-    const emailToken = EmailTokenModel.create({
+    const emailToken = await EmailTokenModel.create({
       userId: User._id,
       token: crypto.randomBytes(32).toString("hex"),
     })
 
     axios.post(
       `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
-      {
-        email: User.email,
-        emailToken: emailToken.token,
-      }
+      { emailToken: emailToken.token }
     )
   } catch (error) {
     res.status(400).send("Something went wrong! Please Retry or Check later")

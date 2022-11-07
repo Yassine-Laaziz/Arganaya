@@ -16,7 +16,7 @@ const verify = async (req, res) => {
         .json({ message: "You're already verified!", status: "Success" })
 
     await UserModel.updateOne({ _id: foundEmailToken.userId, verified: true })
-    await EmailTokenModel.deleteOne({ userId: _id })
+    await EmailTokenModel.deleteMany({ userId: foundEmailToken.userId })
 
     res
       .status(200)
@@ -24,7 +24,7 @@ const verify = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       message:
-        "Something went wrong, please do not modify the link, in case you don't have one click 'resend link' and check you email",
+        "Something went wrong, please do not modify the link, in case you don't have one click 'Resend' and check you email",
       status: "Error",
     })
   }
