@@ -6,12 +6,11 @@ import crypto from "crypto"
 
 const resend = async (req, res) => {
   try {
-    const jwtToken = await JSON.parse(req.body.jwtToken)
-    if (!jwtToken)
+    if (!req.body.jwtToken)
       return res
         .status(400)
         .json({ message: "something went wrong!", status: "Error" })
-    const { _id } = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY)
+    const { _id } = jwt.verify(req.body.jwtToken, process.env.JWT_SECRET_KEY)
 
     const user = await UserModel.findById(_id)
     if (!user)
@@ -35,7 +34,7 @@ const resend = async (req, res) => {
 
     await axios.post(
       `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
-      { emailToken: emailToken.token }
+      { emailToken }
     )
     res
       .status(200)

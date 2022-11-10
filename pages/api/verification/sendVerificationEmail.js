@@ -6,8 +6,8 @@ const sendVerificationEmail = async (req, res) => {
   try {
     const { emailToken } = req.body
     connect()
-    const userInfo = await UserModel.findById(emailToken.token)
-    
+    const userInfo = await UserModel.findById(emailToken.userId)
+
     const transporter = nodemailer.createTransport({
       host: process.env.HOST,
       service: process.env.SERVICE,
@@ -18,11 +18,6 @@ const sendVerificationEmail = async (req, res) => {
         pass: process.env.PASS,
       },
     })
-    
-    const toggle = () => {
-      input = document.querySelector('#password')
-      input.type = input.type === "password" ? "text" : "password"
-     }
 
     await transporter.sendMail({
       from: process.env.USER,
@@ -40,12 +35,27 @@ const sendVerificationEmail = async (req, res) => {
         display:inline-block;
         box-shadow: 0 0 2px 2px white;
         color:white;
-        position: relative;
-        left:2%;
         background-color:hsla(0, 0%, 0%, .8);
         ">
           Activate Arganaya Account
         </h1>
+        <h2 style="
+        box-shadow: 0 0 2px 2px white;
+        color:white;
+        width:fit-content;
+        background-color:hsla(0, 0%, 0%, .8);">
+          Check your info:
+        </h2>
+        <p style="
+        font-family: monospace, sans-serif;
+        font-size:20px;
+        color:black;">
+          full name: ${userInfo.fullName} <br />
+          number: ${userInfo.number}<br />
+          email: ${userInfo.email}<br />
+          address line 1: ${userInfo.addressLine1}<br />
+          address line 2: ${userInfo.addressLine2}<br />
+        </p>
         <p style="
         color:red;
         text-align:center;
@@ -54,35 +64,10 @@ const sendVerificationEmail = async (req, res) => {
         ">
           this was sent to you in order to verify your "Arganaya" Account, if this is you, verify through the button below, if it's not don't do anything, you're totally secure.
         </p>
-        <h2 style="
-        display:inline-block;
-        box-shadow: 0 0 2px 2px white;
-        color:white;
-        position: relative;
-        left:2%;
-        background-color:hsla(0, 0%, 0%, .8);">
-          Check your info:
-        </h2>
-        <p style="
-        display:inline-block;
-        font-family: monospace, sans-serif;
-        font-size:20px;">
-          full name: ${userInfo.fullName} <br />
-          number: ${userInfo.number}<br />
-          email: ${userInfo.email}<br />
-          address line 1: ${userInfo.addressLine1}<br />
-          address line 2: ${userInfo.addressLine2}<br />
-        </p>
-        <div>
-          <input value="${userInfo.password}" readonly type="password" id="password" />
-          <span onclick={${toggle()}} style="cursor: pointer, box-shadow: 0 0 5px 5px black">
-            <p style="cursor:pointer">show/hide</p>
-          </span>
-        </div>
         <button style="
         padding: 10px;
-        margin-inline:auto
         margin-block:80px 40px;
+        text-align:center;
         font-size:20px;
         font-weight:600;
         background-color:white;
@@ -91,7 +76,11 @@ const sendVerificationEmail = async (req, res) => {
         border: 1px solid;
         box-shadow: 0 0 1px 2px;
         border-radius: 10px;
-        "><a href="${process.env.BASE_URL}/Verify?emailToken=${emailToken}">Verify?</a></button>
+        "><a href="${process.env.BASE_URL}/Verify?emailToken=${emailToken.token}" style="
+        text-decoration:none;
+        color:inherit;">
+          Verify?
+        </a></button>
       </main>
       `,
     })

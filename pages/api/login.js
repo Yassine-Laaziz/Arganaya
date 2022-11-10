@@ -22,9 +22,10 @@ const handler = async (req, res) => {
     if (!match) return res.status(422).send("Incorrect password!")
 
     // refreshing Token
-    const token = createToken(user._id)
-
-    res.status(200).send(token)
+    const {jwtToken, serialized} = createToken(user._id)
+    
+    res.setHeader("Set-Cookie", serialized)
+    res.status(200).send(jwtToken)
   } catch (error) {
     res
       .status(400)

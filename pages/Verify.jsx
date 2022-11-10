@@ -8,6 +8,7 @@ import {
   MdOutlineMarkEmailRead,
   MdOutlineSmsFailed,
 } from "react-icons/md"
+import cookie from 'cookie'
 
 const Verify = () => {
   const router = useRouter()
@@ -15,7 +16,7 @@ const Verify = () => {
   const [info, setInfo] = useState({})
 
   useEffect(() => {
-    const jwtToken = localStorage.getItem("token")
+    const jwtToken = cookie.parse(document.cookie).jwtToken
     axios
       .post("/api/checkAuthorized", { jwtToken })
       .then((res) => {
@@ -59,24 +60,28 @@ const Verify = () => {
 
   const resend = async () => {
     try {
-      if (remaining <= 60) {
+      if (remaining <= 0) {
         setRemaining(60)
+        toast.loading("Sending..", { id: "loading" })
         const response = await axios.post(
           "/api/verification/resendVerificationEmail",
-          { jwtToken: localStorage.getItem("token") }
+          { jwtToken: cookie.parse(document.cookie).jwtToken }
         )
         if (!response)
           return setInfo({
-            message: "something went wrong click the 'Resend' Button or try again later",
+            message:
+              "something went wrong click the 'Resend' Button or try again later",
             status: "Error",
           })
 
         setInfo(response.data)
+        toast.dismiss("loading")
+        toast.success(response.data.message, { style: { textAlign: "center" } })
       } else {
         toast.error(`Too many requests! wait for ${remaining} seconds `)
       }
     } catch (e) {
-      setInfo(e)
+      setInfo(e.response || 'Something went wrong please retry or check again later')
     }
   }
 
@@ -102,8 +107,8 @@ const Verify = () => {
             <MdOutlineEmail className={styles.icon} fill="gray" />
           </>
         )}
-        {/* if it's not pending */}
         <p className={styles.status}>{info.status}</p>
+        {/* if it's not pending */}
         {info.status !== "Pending.." && (
           <p className={styles.message}>{info.message}</p>
         )}
@@ -111,8 +116,8 @@ const Verify = () => {
         {info.status === "Error" && (
           <button onClick={() => resend()}>resend</button>
         )}
-        {/* if is pending*/}
-        {info.status === "Pending.." && (
+        {/* if is not success*/}
+        {info.status !== "Success" && (
           <button onClick={() => resend()}>Resend</button>
         )}
       </div>

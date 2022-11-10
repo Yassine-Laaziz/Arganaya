@@ -26,21 +26,21 @@ const Cart = () => {
   // The User can only close the cart from the cart itself
   // so i'm defining a close cart function here
   const closeCart = () => {
-    document.querySelector(".cart-container").style.animation =
-      "toRight .3s ease-out"
+    cartRef.current.style.animation = "toRight .3s ease-out"
 
     setTimeout(() => {
       setShowCart(false)
     }, 300)
   }
 
+  // this is wrapped in useEffect because "window" is not defined at first
+  const modal = useRef()
   useEffect(() => {
-    // this is wrapped in useEffect because "window" is not defined at first
-    window.addEventListener("click", () => showCart && closeCart())
+    window.addEventListener("click", (e) => e.target === modal.current && closeCart())
   }, [])
 
   return (
-    <div className="cart-wrapper">
+    <div className="cart-wrapper" ref={modal} >
       <div className="cart-container" ref={cartRef}>
         <button
           type="button"

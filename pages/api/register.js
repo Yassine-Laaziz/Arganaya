@@ -12,7 +12,7 @@ const handler = async (req, res) => {
     connect()
     //for more security
     const user = {
-      lastName: req.body.fullName,
+      fullName: req.body.fullName,
       number: req.body.number,
       email: req.body.email,
       addressLine1: req.body.addressLine1,
@@ -25,7 +25,6 @@ const handler = async (req, res) => {
     if (
       !user.fullName ||
       !user.number ||
-      !user.email ||
       !user.email ||
       !user.addressLine1 ||
       !user.addressLine2 ||
@@ -73,8 +72,9 @@ const handler = async (req, res) => {
     const User = await UserModel.create(user)
 
     // jwt Token
-    const jwtToken = createToken(User._id)
+    const { jwtToken, serialized } = createToken(User._id)
 
+    res.setHeader("Set-Cookie", serialized)
     res.status(200).send(jwtToken)
 
     // function continues to send email after response..
@@ -85,7 +85,7 @@ const handler = async (req, res) => {
 
     axios.post(
       `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
-      { emailToken: emailToken.token }
+      { emailToken }
     )
   } catch (error) {
     res.status(400).send("Something went wrong! Please Retry or Check later")

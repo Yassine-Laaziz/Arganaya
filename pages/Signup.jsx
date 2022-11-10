@@ -43,8 +43,7 @@ const SignUp = () => {
     setIsLoading(true)
     axios
       .post(`/api/register`, data)
-      .then((res) => {
-        localStorage.setItem("token", JSON.stringify(res.data))
+      .then(() => {
         toast.success('Email Sent Successfully', {
           style: { textAlign: "center", color: "green" },
           duration: 10000,

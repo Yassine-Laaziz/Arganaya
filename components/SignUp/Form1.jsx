@@ -1,20 +1,12 @@
 const Form1 = (props) => {
-  const {handleChange, name, lastName, number, email} = props
+  const {handleChange, fullName, number, email} = props
   return (
     <>
       <input
         type="text"
-        placeholder="Name"
-        onChange={(e) => handleChange("name", e)}
-        defaultValue={name}
-        autoFocus
-        required
-      />
-      <input
-        type="text"
-        placeholder="Last Name"
-        onChange={(e) => handleChange("lastName", e)}
-        defaultValue={lastName}
+        placeholder="Full Name"
+        onChange={(e) => handleChange("fullName", e)}
+        defaultValue={fullName}
         required
       />
       <input

@@ -28,13 +28,20 @@ const Login = () => {
     setIsLoading(true)
     axios
       .post(`/api/login`, data)
-      .then((res) => {
-        localStorage.setItem("token", JSON.stringify(res.data))
+      .then(() => {
         setIsLoading(false)
         toast.success("Successfully Logged in!")
+        router.reload()
         router.push("/")
       })
-      .catch(() => setIsLoading(false))
+      .catch((err) => {
+        setIsLoading(false)
+        const duration = err.response.data.split("").length * 70 + 1500
+        toast.error(err.response.data, {
+          style: { textAlign: "center", color: "red" },
+          duration: duration,
+        })
+      })
   }
 
   return (
