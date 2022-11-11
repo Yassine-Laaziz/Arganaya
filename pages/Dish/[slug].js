@@ -40,7 +40,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
           <h1>{name}</h1>
           <h4>Details: </h4>
           <p>{description}</p>
-          <p className="price">${price}</p>
+          <p className="price">{price}dh</p>
           <div className="quantity">
             <h3>Quantity:</h3>
             <p className="quantity-desc">

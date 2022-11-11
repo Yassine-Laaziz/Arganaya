@@ -15,7 +15,7 @@ const Dish = ({ dish }) => {
           height="250px"
         />
         <p className="dish-name">{name}</p>
-        <p className="dish-price">${price}</p>
+        <p className="dish-price">{price}dh</p>
       </div>
     </Link>
   )

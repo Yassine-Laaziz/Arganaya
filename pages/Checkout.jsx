@@ -50,7 +50,7 @@ const Checkout = () => {
                       {item.quantity > 1 && "s"}
                     </span>
                     <span key={`Checkout${item.name}equations2`}>
-                      {item.quantity} * ${item.price} = {item.quantity * item.price}
+                      {item.quantity} * {item.price}dh = {item.quantity * item.price}
                     </span>
                   </div>
                   <p

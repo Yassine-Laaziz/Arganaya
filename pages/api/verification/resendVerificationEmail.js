@@ -9,18 +9,18 @@ const resend = async (req, res) => {
     if (!req.body.jwtToken)
       return res
         .status(400)
-        .json({ message: "something went wrong!", status: "Error" })
+        .json({ info: { message: "something went wrong!", status: "Error" } })
     const { _id } = jwt.verify(req.body.jwtToken, process.env.JWT_SECRET_KEY)
 
     const user = await UserModel.findById(_id)
     if (!user)
       return res
         .status(400)
-        .json({ message: "something went wrong!", status: "Error" })
+        .json({ info: { message: "something went wrong!", status: "Error" } })
     if (user.verified)
-      return res
-        .status(200)
-        .json({ message: "You're already verified!", status: "Success" })
+      return res.status(200).json({
+        info: { message: "You're already verified!", status: "Success" },
+      })
 
     let emailToken
     const foundToken = await EmailTokenModel.findOne({ userId: _id })
@@ -40,11 +40,10 @@ const resend = async (req, res) => {
       .status(200)
       .json({ message: "Email sent Successfully", status: "Pending" })
   } catch (e) {
-    res.status(400).send({
-      message:
-        "something went wrong click the 'Resend' Button or try again later",
-      status: "Error",
-    })
+    console.log('from resend:' + e)
+    res
+      .status(400)
+      .send('from resend:' + error)
   }
 }
 

@@ -8,7 +8,7 @@ import {
   MdOutlineMarkEmailRead,
   MdOutlineSmsFailed,
 } from "react-icons/md"
-import cookie from 'cookie'
+import cookie from "cookie"
 
 const Verify = () => {
   const router = useRouter()
@@ -69,19 +69,24 @@ const Verify = () => {
         )
         if (!response)
           return setInfo({
-            message:
-              "something went wrong click the 'Resend' Button or try again later",
+            message: "Something went wrong please retry or check again later",
             status: "Error",
           })
 
-        setInfo(response.data)
+        setInfo(response.data.info)
         toast.dismiss("loading")
         toast.success(response.data.message, { style: { textAlign: "center" } })
       } else {
         toast.error(`Too many requests! wait for ${remaining} seconds `)
       }
     } catch (e) {
-      setInfo(e.response || 'Something went wrong please retry or check again later')
+      console.log('from Verify:' + e)
+      setInfo(
+        e.response.info || {
+          message: "Something went wrong please retry or check again later",
+          Status: "Error",
+        }
+      )
     }
   }
 
