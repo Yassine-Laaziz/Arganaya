@@ -73,20 +73,25 @@ const Verify = () => {
             status: "Error",
           })
 
-        setInfo(response.data.info)
+        setInfo(
+          response.data.info || {
+            message: "Something went wrong please retry or check again later",
+            Status: "Error",
+          }
+        )
         toast.dismiss("loading")
-        toast.success(response.data.message, { style: { textAlign: "center" } })
+        toast.success(response.data.info.message || 'Something went wrong, retry or contact us', {
+          style: { textAlign: "center" },
+        })
       } else {
         toast.error(`Too many requests! wait for ${remaining} seconds `)
       }
     } catch (e) {
-      console.log('from Verify:' + e)
-      setInfo(
-        e.response.info || {
-          message: "Something went wrong please retry or check again later",
-          Status: "Error",
-        }
-      )
+      console.log(e)
+      setInfo({
+        message: "Something went wrong please retry or check again later",
+        Status: "Error",
+      })
     }
   }
 

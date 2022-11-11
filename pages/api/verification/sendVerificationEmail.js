@@ -86,8 +86,7 @@ const sendVerificationEmail = async (req, res) => {
     })
     res.status(200).send("email sent succefully")
   } catch (error) {
-    console.log('from Verify:' + error)
-    res.status(400).send('from Verify:' + error)
+    res.status(400).send("we're unable to send email")
   }
 }
 export default sendVerificationEmail

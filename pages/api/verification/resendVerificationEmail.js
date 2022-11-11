@@ -38,12 +38,15 @@ const resend = async (req, res) => {
     )
     res
       .status(200)
-      .json({ message: "Email sent Successfully", status: "Pending" })
+      .json({ info: { message: "Email sent Successfully", status: "Pending" } })
   } catch (e) {
-    console.log('from resend:' + e)
-    res
-      .status(400)
-      .send('from resend:' + error)
+    res.status(400).send({
+      info: {
+        message:
+          "something went wrong click the 'Resend' Button or try again later",
+        status: "Error",
+      },
+    })
   }
 }
 
