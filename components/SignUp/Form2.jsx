@@ -1,32 +1,26 @@
 const Form2 = (props) => {
-  const { handleChange, addressLine1, addressLine2, password, confirmPassword } = props
+  const { dataChange, email, password, confirmPassword } = props
   return (
     <>
       <input
-        type="text"
-        placeholder="Address Line 1"
-        onChange={(e) => handleChange("addressLine1", e)}
-        defaultValue={addressLine1}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Address Line 2"
-        onChange={(e) => handleChange("addressLine2", e)}
-        defaultValue={addressLine2}
+        type="email"
+        placeholder="Email"
+        pattern="[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+        onChange={(e) => dataChange("email", e)}
+        defaultValue={email}
         required
       />
       <input
         type="password"
         placeholder="Password"
-        onChange={(e) => handleChange("password", e)}
+        onChange={(e) => dataChange("password", e)}
         defaultValue={password}
         required
       />
-          <input
+      <input
         type="password"
         placeholder="Confirm password"
-        onChange={(e) => handleChange("confirmPassword", e)}
+        onChange={(e) => dataChange("confirmPassword", e)}
         defaultValue={confirmPassword}
         required
       />

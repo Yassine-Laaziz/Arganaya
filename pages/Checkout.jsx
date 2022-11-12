@@ -4,7 +4,6 @@ import { BsCartXFill } from "react-icons/bs"
 import Link from "next/link"
 import axios from "axios"
 import { useRouter } from "next/router"
-import cookie from "cookie"
 import { useEffect } from "react"
 import { urlFor } from "../lib/client"
 
@@ -12,9 +11,8 @@ const Checkout = () => {
   const { cartItems } = useStateContext()
   const router = useRouter()
   useEffect(() => {
-    const jwtToken = cookie.parse(document.cookie).jwtToken
     axios
-      .post("/api/checkAuthorized", { jwtToken })
+      .get("/api/checkAuthorized")
       .then((res) => !res.data.verified && router.push("/Verify"))
       .catch(() => router.push("/Verify"))
   }, [])
@@ -50,7 +48,7 @@ const Checkout = () => {
                       {item.quantity > 1 && "s"}
                     </span>
                     <span key={`Checkout${item.name}equations2`}>
-                      {item.quantity} * {item.price}dh = {item.quantity * item.price}
+                      {item.quantity} * {item.price}dh = {item.quantity * item.price}dh
                     </span>
                   </div>
                   <p

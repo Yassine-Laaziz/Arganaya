@@ -15,8 +15,6 @@ const handler = async (req, res) => {
       fullName: req.body.fullName,
       number: req.body.number,
       email: req.body.email,
-      addressLine1: req.body.addressLine1,
-      addressLine2: req.body.addressLine2,
       password: req.body.password,
       confirmPassword: req.body.confirmPassword,
     }
@@ -26,8 +24,6 @@ const handler = async (req, res) => {
       !user.fullName ||
       !user.number ||
       !user.email ||
-      !user.addressLine1 ||
-      !user.addressLine2 ||
       !user.password ||
       !user.confirmPassword
     )
@@ -45,10 +41,8 @@ const handler = async (req, res) => {
     const exists = await UserModel.findOne({ email })
     if (exists && exists.verified)
       return res.status(422).send("Account Already Registered!")
-    else if (exists && !exists.verified)
-      await UserModel.findByIdAndDelete(exists._id)
 
-    // password & confirm password the same?
+    // 4 password & confirm password the same?
     if (user.password !== user.confirmPassword) {
       return res
         .status(422)

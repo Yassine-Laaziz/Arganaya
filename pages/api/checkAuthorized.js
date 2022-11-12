@@ -1,11 +1,12 @@
 import { connect } from "../../lib/mongodb"
 import UserModel from "../../models/Users"
 import jwt from "jsonwebtoken"
+import cookie from 'cookie'
 
 const checkVerified = async (req, res) => {
   try {
     connect()
-    const jwtToken = req.body.jwtToken
+    const jwtToken = cookie.parse(req.headers.cookie).jwtToken
     const { _id } = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY)
     const user = await UserModel.findById(_id)
     if (!user) return res.status(401).json({ user: null, verified: null })

@@ -16,9 +16,8 @@ const Verify = () => {
   const [info, setInfo] = useState({})
 
   useEffect(() => {
-    const jwtToken = cookie.parse(document.cookie).jwtToken
     axios
-      .post("/api/checkAuthorized", { jwtToken })
+      .get("/api/checkAuthorized")
       .then((res) => {
         if (!res.data.user) router.push("Login")
         if (res.data.verified)
@@ -30,7 +29,7 @@ const Verify = () => {
   useEffect(() => {
     if (emailToken) {
       axios
-        .get(`/api/verification/verify?emailToken=${emailToken}`)
+        .post(`/api/verification/verify`, { emailToken })
         .then((res) => setInfo(res.data))
         .catch((err) => {
           setInfo(
@@ -80,14 +79,17 @@ const Verify = () => {
           }
         )
         toast.dismiss("loading")
-        toast.success(response.data.info.message || 'Something went wrong, retry or contact us', {
-          style: { textAlign: "center" },
-        })
+        toast.success(
+          response.data.info.message ||
+            "Something went wrong, retry or contact us",
+          {
+            style: { textAlign: "center" },
+          }
+        )
       } else {
         toast.error(`Too many requests! wait for ${remaining} seconds `)
       }
     } catch (e) {
-      console.log(e)
       setInfo({
         message: "Something went wrong please retry or check again later",
         Status: "Error",
@@ -121,10 +123,6 @@ const Verify = () => {
         {/* if it's not pending */}
         {info.status !== "Pending.." && (
           <p className={styles.message}>{info.message}</p>
-        )}
-        {/* if status === error */}
-        {info.status === "Error" && (
-          <button onClick={() => resend()}>resend</button>
         )}
         {/* if is not success*/}
         {info.status !== "Success" && (
