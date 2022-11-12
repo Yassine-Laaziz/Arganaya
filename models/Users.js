@@ -1,12 +1,9 @@
 import { Schema, model, models } from "mongoose"
 
 const UserSchema = new Schema({
-  name: { type: String, required: true },
-  lastName: { type: String, required: true },
+  fullName: { type: String, required: true },
   number: { type: Number, required: true },
-  email: { type: String, required: true, unique: true },
-  addressLine1: { type: String, required: true },
-  addressLine2: { type: String, required: true },
+  email: { type: String, required: true }, // i'm not going to use "unique" here
   password: { type: String, required: true },
   verified: { type: Boolean, default: false },
 })

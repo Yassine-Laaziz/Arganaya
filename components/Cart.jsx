@@ -10,7 +10,6 @@ import { TiDeleteOutline } from "react-icons/ti"
 import { useStateContext } from "../context/StateContext"
 import { urlFor } from "../lib/client"
 
-
 const Cart = () => {
   const {
     totalPrice,
@@ -27,16 +26,21 @@ const Cart = () => {
   // The User can only close the cart from the cart itself
   // so i'm defining a close cart function here
   const closeCart = () => {
-    document.querySelector(".cart-container").style.animation =
-      "toRight .3s ease-out"
+    cartRef.current.style.animation = "toRight .3s ease-out"
 
     setTimeout(() => {
       setShowCart(false)
     }, 300)
   }
 
+  // this is wrapped in useEffect because "window" is not defined at first
+  const modal = useRef()
+  useEffect(() => {
+    window.addEventListener("click", (e) => e.target === modal.current && closeCart())
+  }, [])
+
   return (
-    <div className="cart-wrapper">
+    <div className="cart-wrapper" ref={modal} >
       <div className="cart-container" ref={cartRef}>
         <button
           type="button"
@@ -72,7 +76,7 @@ const Cart = () => {
                 <div className="item-desc">
                   <div className="flex top">
                     <h5>{item.name}</h5>
-                    <h4>${item.price}</h4>
+                    <h4>{item.price}dh</h4>
                   </div>
                   <div className="flex bottom">
                     <div>
@@ -112,7 +116,7 @@ const Cart = () => {
           <div className="cart-bottom">
             <div className="total">
               <h3>Subtotal:</h3>
-              <h3>${totalPrice}</h3>
+              <h3>{totalPrice}dh</h3>
             </div>
             <div className="btn-container">
               <Link href="/Checkout">

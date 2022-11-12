@@ -11,19 +11,16 @@ import Form2 from "../components/SignUp/Form2"
 const SignUp = () => {
   // initializing states, if user somehow skipped the form, mongodb won't save account
   const [data, setData] = useState({
-    name: "",
-    lastName: "",
+    fullName: "",
     number: 0,
     email: "",
-    addressLine1: "",
-    addressLine2: "",
     password: "",
     confirmPassword: "",
   })
   const [isLoading, setIsLoading] = useState(false)
 
-  // Handle Change
-  const handleChange = (property, e) => {
+  // data Change
+  const dataChange = (property, e) => {
     setData((prev) => {
       prev[property] = e.target.value
       return prev
@@ -32,8 +29,8 @@ const SignUp = () => {
 
   // Multistep Form
   const { step, next, back, isFirstStep, isLastStep } = useMultistepForm([
-    <Form1 handleChange={handleChange} {...data} key={`Arganaya form 1`} />,
-    <Form2 handleChange={handleChange} {...data} key={`Arganaya form 2`} />,
+    <Form1 dataChange={dataChange} {...data} key={`Arganaya form 1`} />,
+    <Form2 dataChange={dataChange} {...data} key={`Arganaya form 2`} />,
   ])
 
   // Handle Submit
@@ -44,8 +41,11 @@ const SignUp = () => {
     setIsLoading(true)
     axios
       .post(`/api/register`, data)
-      .then((res) => {
-        localStorage.setItem("token", JSON.stringify(res.data))
+      .then(() => {
+        toast.success("Email Sent Successfully", {
+          style: { textAlign: "center", color: "green" },
+          duration: 10000,
+        })
         router.push("/Verify")
       })
       .catch((err) => {

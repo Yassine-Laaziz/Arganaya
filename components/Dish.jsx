@@ -11,11 +11,11 @@ const Dish = ({ dish }) => {
           src={urlFor(images[0])}
           alt="Arganaya"
           className="dish-image"
-          width={"250px"}
+          width="250px"
           height="250px"
         />
         <p className="dish-name">{name}</p>
-        <p className="dish-price">${price}</p>
+        <p className="dish-price">{price}dh</p>
       </div>
     </Link>
   )

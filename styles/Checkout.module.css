@@ -1,0 +1,91 @@
+.Checkout {
+  min-width: 100vw;
+  min-height: 100vh;
+}
+.emptyCart {
+  text-align: center;
+  font-weight: 700;
+}
+.emptyCartLogo {
+  width: 30%;
+  height: 30%;
+  margin-bottom: 60px;
+}
+.emptyCart button {
+  background-color: cyan;
+  margin-top: 20px;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 40px;
+}
+.emptyCart a {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.dishesContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  gap: 50px;
+}
+.dishRow {
+  width: 80%;
+  margin-inline: auto;
+  display: flex;
+  border-bottom: 1px solid hsla(0, 0%, 0%, 0.2);
+  border-left: 1px solid hsla(0, 0%, 0%, 0.2);
+  border-right: 1px solid hsla(0, 0%, 0%, 0.2);
+  border-bottom-left-radius: 60px;
+  overflow: hidden;
+  position: relative;
+}
+.info {
+  flex: 1;
+  padding: 10px;
+  font-weight: 600;
+}
+.dishRow img {
+  width: 30%;
+  max-height: 200px;
+  border-right: 1px solid gray;
+}
+.equations {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  padding-inline: 10px;
+  border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
+  white-space: nowrap;
+}
+.description {
+  margin-top: 30px;
+}
+
+.Checkout form {
+  margin-top: 100px;
+  margin-inline: auto;
+  width: 50%;
+  padding: 20px;
+  border: 4px solid cyan;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.Checkout form input {
+    padding-left: 4px;
+    padding-block: 10px;
+}
+.Checkout form button {
+    margin-inline: auto;
+    width: fit-content;
+    font-size: 30px;
+    font-weight: 600;
+    padding-block:5px;
+    padding-inline: 25px;
+    cursor: pointer;
+    background-color: hsla(180, 100%, 50%, .2);
+    border: 2px solid cyan;
+    border-radius: 10px;
+}

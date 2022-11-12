@@ -1,4 +1,4 @@
-import styles from '../styles/Verify.module.css'
+import styles from "../styles/Verify.module.css"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import axios from "axios"
@@ -8,24 +8,28 @@ import {
   MdOutlineMarkEmailRead,
   MdOutlineSmsFailed,
 } from "react-icons/md"
+import cookie from "cookie"
 
 const Verify = () => {
   const router = useRouter()
-  const { emailToken, email } = router.query
+  const { emailToken } = router.query
   const [info, setInfo] = useState({})
 
   useEffect(() => {
-    const jwtToken = localStorage.getItem("token")
     axios
-      .post("/api/checkAuthorized", { jwtToken })
-      .then((res) => !res.data.user && router.push("Login"))
+      .get("/api/checkAuthorized")
+      .then((res) => {
+        if (!res.data.user) router.push("Login")
+        if (res.data.verified)
+          setInfo({ message: "You're already verified!", status: "Success" })
+      })
       .catch((res) => !res.user && router.push("/Login"))
   }, [])
 
   useEffect(() => {
-    if (emailToken && email) {
+    if (emailToken) {
       axios
-        .get(`/api/verification/verify?emailToken=${emailToken}`)
+        .post(`/api/verification/verify`, { emailToken })
         .then((res) => setInfo(res.data))
         .catch((err) => {
           setInfo(
@@ -41,22 +45,13 @@ const Verify = () => {
         status: "Pending..",
       })
     }
-  }, [emailToken, email]) // the query property doesn't load on first render
-
-  useEffect(() => {
-    // an email is already sent when the user is signed up  and we don't want to send another
-    // one each time we reload the page, because it might be automated and we'll lose requests
-    toast.success("An email was sent to your account, please Verify!", {
-      duration: 8000,
-      style: { textAlign: "center" },
-    })
-  }, [])
+  }, [emailToken]) // the query property doesn't load on first render
 
   // creating a countdown until the user is allowed to get another email.
-  const [passed, setPassed] = useState(20)
+  const [remaining, setRemaining] = useState(40)
   useEffect(() => {
     const timer = setInterval(() => {
-      setPassed((prev) => prev + 1)
+      setRemaining((prev) => prev - 1)
     }, 1000)
 
     return () => clearInterval(timer)
@@ -64,27 +59,40 @@ const Verify = () => {
 
   const resend = async () => {
     try {
-      if (passed > 60) {
-        setPassed(0)
+      if (remaining <= 0) {
+        setRemaining(60)
+        toast.loading("Sending..", { id: "loading" })
         const response = await axios.post(
           "/api/verification/resendVerificationEmail",
-          { jwtToken: localStorage.getItem("token") }
+          { jwtToken: cookie.parse(document.cookie).jwtToken }
         )
-
         if (!response)
-          return toast.error(
-            "something went wrong we're unable to email you the link"
-          )
+          return setInfo({
+            message: "Something went wrong please retry or check again later",
+            status: "Error",
+          })
 
-        toast.success(response.data, {
-          style: { textAlign: "center", color: "green" },
-        })
+        setInfo(
+          response.data.info || {
+            message: "Something went wrong please retry or check again later",
+            Status: "Error",
+          }
+        )
+        toast.dismiss("loading")
+        toast.success(
+          response.data.info.message ||
+            "Something went wrong, retry or contact us",
+          {
+            style: { textAlign: "center" },
+          }
+        )
       } else {
-        toast.error(`Too many requests! wait for ${60 - passed} seconds `)
+        toast.error(`Too many requests! wait for ${remaining} seconds `)
       }
     } catch (e) {
-      toast.error("something went wrong we're unable to email you the link", {
-        style: { textAlign: "center" },
+      setInfo({
+        message: "Something went wrong please retry or check again later",
+        Status: "Error",
       })
     }
   }
@@ -111,18 +119,14 @@ const Verify = () => {
             <MdOutlineEmail className={styles.icon} fill="gray" />
           </>
         )}
-        {/* if it's not pending */}
         <p className={styles.status}>{info.status}</p>
+        {/* if it's not pending */}
         {info.status !== "Pending.." && (
           <p className={styles.message}>{info.message}</p>
         )}
-        {/* if status === error */}
-        {info.status === "Error" && (
-          <button onClick={() => resend()}>resend</button>
-        )}
-        {/* if is pending*/}
-        {info.status === "Pending.." && (
-          <button onClick={() => resend()}>resend</button>
+        {/* if is not success*/}
+        {info.status !== "Success" && (
+          <button onClick={() => resend()}>Resend</button>
         )}
       </div>
     </div>
