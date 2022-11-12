@@ -9,7 +9,7 @@ const verify = async (req, res) => {
 
     const foundEmailToken = await EmailTokenModel.findOne({ token: emailToken })
     if (!foundEmailToken) {
-      // when we resend, we create another EmailTokenModel if the old one expired 
+      // when we resend, we create another EmailTokenModel if the old one expired
       return res.status(200).json({
         message: "Your Token expired, click 'Resend' for a new one and check you email",
         status: "Error",
@@ -22,7 +22,10 @@ const verify = async (req, res) => {
         .status(200)
         .json({ message: "You're already verified!", status: "Success" })
 
-    await UserModel.updateOne({ _id: foundEmailToken.userId, verified: true })
+    await UserModel.updateOne(
+      { _id: foundEmailToken.userId },
+      { verified: true }
+    )
     await UserModel.deleteMany({ email: user.email, verified: false })
     await EmailTokenModel.deleteMany({ userId: foundEmailToken.userId })
 
@@ -30,11 +33,14 @@ const verify = async (req, res) => {
       .status(200)
       .json({ message: "Email verified successfully!", status: "Success" })
   } catch (error) {
-    res.status(400).json({
-      message:
-        "Something went wrong, please do not modify the link, in case you don't have one click 'Resend' and check you email",
-      status: "Error",
-    })
+    console.log(error)
+    res.status(400).json(
+      error || {
+        message:
+          "Something went wrong, please do not modify the link, in case you don't have one click 'Resend' and check you email",
+        status: "Error",
+      }
+    )
   }
 }
 

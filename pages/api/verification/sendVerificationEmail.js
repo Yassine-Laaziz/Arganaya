@@ -53,8 +53,6 @@ const sendVerificationEmail = async (req, res) => {
           full name: ${userInfo.fullName} <br />
           number: ${userInfo.number}<br />
           email: ${userInfo.email}<br />
-          address line 1: ${userInfo.addressLine1}<br />
-          address line 2: ${userInfo.addressLine2}<br />
         </p>
         <p style="
         color:red;
@@ -84,7 +82,7 @@ const sendVerificationEmail = async (req, res) => {
       </main>
       `,
     })
-    res.status(200).send("email sent succefully")
+    res.status(200).send(process.env.BASE_URL)
   } catch (error) {
     res.status(400).send("we're unable to send email")
   }
