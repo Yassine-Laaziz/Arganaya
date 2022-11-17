@@ -165,10 +165,10 @@ const Cart = () => {
         </div>
         {cartItems.length >= 1 && (
           <div className="cart-bottom">
-            <p className="total">
+            <div className="total">
               <h3>Subtotal:</h3>
               <h3>{totalPrice}dh</h3>
-            </p>
+            </div>
             <div className="btn-container">
               <Link href="/Checkout">
                 <button

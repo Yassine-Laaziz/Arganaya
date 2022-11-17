@@ -11,7 +11,7 @@ export const StateContext = ({ children }) => {
   const [qty, setQty] = useState(1)
 
   // this is for persisting data
-  useEffect(async () => {
+  useEffect(() => {
     // these will after be filtered incase user modifies localStorage
     const cart = JSON.parse(localStorage.getItem("cart")) || null
     const totalQty = cart?.reduce((total, cartItem) => {

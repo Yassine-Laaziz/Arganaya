@@ -1,9 +1,9 @@
 import styles from "../styles/Components/Dish.module.css"
 import Link from "next/link"
 import { urlFor } from "../lib/client"
-import { IoOptions } from "react-icons/io5"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai"
+import { IoOptions } from "react-icons/io5"
 import { CgCloseR } from "react-icons/cg"
 import { useStateContext } from "../context/StateContext"
 import transpileValue from "../lib/utils/transpileValue"
@@ -17,9 +17,7 @@ const Dish = ({ dish }) => {
 
   const handleChange = (e, option) => {
     const status = transpileValue(e.target.valueAsNumber, "toText")
-    setChosenOptions((prev) => {
-      return { ...prev, [option]: status }
-    })
+    setChosenOptions((prev) => ({ ...prev, [option]: status }))
   }
 
   const toggleDisplay = (e, checkModal = true) => {
@@ -84,7 +82,10 @@ const Dish = ({ dish }) => {
           type="button"
           className="add-to-cart"
           style={{ marginTop: "10px", marginInline: "auto", display: "block" }}
-          onClick={() => onAdd(dish, qty, chosenOptions)}
+          // he we parse it in order to avoid passing a state as an argument
+          onClick={() =>
+            onAdd(dish, qty, JSON.parse(JSON.stringify(chosenOptions)))
+          }
         >
           Add to bag
         </button>
