@@ -5,10 +5,10 @@ import Link from "next/link"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-import { urlFor } from "../lib/client"
+import { urlFor, client } from "../lib/client"
+import transpileValue from "../lib/utils/transpileValue"
 
-const Checkout = () => {
-  const { cartItems } = useStateContext()
+const Checkout = ({ dishes }) => {
   const router = useRouter()
   useEffect(() => {
     axios
@@ -17,9 +17,18 @@ const Checkout = () => {
       .catch(() => router.push("/Verify"))
   }, [])
 
+  const { cartItems } = useStateContext()
+  const cleanedCart = cartItems.filter((item) => {
+    let status = false
+    dishes.forEach((dish) => {
+      if (dish._id === item._id && dish.price === item.price) status = true
+    })
+    return status
+  })
+
   return (
     <div className={styles.Checkout}>
-      {!cartItems[0] ? (
+      {!cleanedCart[0] ? (
         <section className={styles.emptyCart}>
           <BsCartXFill className={styles.emptyCartLogo} />
           <p>you currently have nothing on your cart</p>
@@ -30,7 +39,7 @@ const Checkout = () => {
       ) : (
         <>
           <section className={styles.dishesContainer}>
-            {cartItems.map((item) => (
+            {cleanedCart.map((item) => (
               <div className={styles.dishRow} key={`Checkout${item.name}row`}>
                 <img
                   key={`Checkout${item.name}image`}
@@ -48,7 +57,8 @@ const Checkout = () => {
                       {item.quantity > 1 && "s"}
                     </span>
                     <span key={`Checkout${item.name}equations2`}>
-                      {item.quantity} * {item.price}dh = {item.quantity * item.price}dh
+                      {item.quantity} * {item.price}dh ={" "}
+                      {item.quantity * item.price}dh
                     </span>
                   </div>
                   <p
@@ -57,6 +67,43 @@ const Checkout = () => {
                   >
                     {item.description}
                   </p>
+                  {/* Options */}
+                  {JSON.stringify(item.chosenOptions) !== "{}" && (
+                    <details className="optionsContainer">
+                      <summary className="optionsLogo">
+                        <span>...</span>
+                      </summary>
+                      <div className={`options ${styles.options}`}>
+                        {Object.entries(item.chosenOptions).map((option, i) => (
+                          <div
+                            className={`option`}
+                            key={`${
+                              item.name + JSON.stringify(item.chosenOptions) + i
+                            }CheckoutOption`}
+                            style={{
+                              border: `5px solid ${transpileValue(
+                                option[1],
+                                "toColor"
+                              )}`,
+                            }}
+                          >
+                            <p
+                              style={{
+                                backgroundColor: transpileValue(
+                                  option[1],
+                                  "toColor"
+                                ),
+                              }}
+                              className="optionHead"
+                            >
+                              {option[1]}
+                            </p>
+                            <p className={styles.optionBottom}>{option[0]}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </details>
+                  )}
                 </div>
               </div>
             ))}
@@ -87,4 +134,13 @@ const Checkout = () => {
     </div>
   )
 }
+
+export const getServerSideProps = async () => {
+  const dishesQuery = '*[_type == "dish"]'
+  const dishes = await client.fetch(dishesQuery)
+  return {
+    props: { dishes },
+  }
+}
+
 export default Checkout

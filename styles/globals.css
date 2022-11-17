@@ -16,6 +16,16 @@ a {
   text-decoration: none;
 }
 
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: hsla(0, 0%, 0%, 0.3);
+}
+
 .main-container {
   max-width: 1400px;
   margin: auto;
@@ -69,30 +79,6 @@ span.text-red {
   gap: 15px;
   margin-top: 20px;
   width: 100%;
-}
-.dish-card {
-  cursor: pointer;
-  transform: scale(1, 1);
-  transition: transform 0.5s ease;
-  color: #324d67;
-}
-.dish-card:hover {
-  transform: scale(1.1, 1.1);
-}
-.dish-image {
-  border-radius: 15px;
-  background-color: #ebebeb;
-  transform: scale(1, 1);
-  transition: transform 0.5s ease;
-}
-
-.dish-name {
-  font-weight: 500;
-}
-.dish-price {
-  font-weight: 800;
-  margin-top: 6px;
-  color: black;
 }
 
 .hero-banner-container {
@@ -231,37 +217,6 @@ span.text-red {
   font-size: 14px;
   font-weight: 300;
 }
-.cart-wrapper {
-  width: 100vw;
-  background: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 100;
-  /* will-change: transform; */
-  transition: all 1s ease-in-out;
-}
-.cart-container {
-  height: 100vh;
-  width: fit-content;
-  background-color: white;
-  float: right;
-  padding: 40px 10px;
-  position: relative;
-}
-@keyframes toLeft {
-  from {
-    translate: 100%;
-  }
-  to {
-    translate: 0;
-  }
-}
-@keyframes toRight {
-  100%{
-    translate:100%
-  }
-}
 
 .footer-container {
   color: #324d67;
@@ -313,7 +268,7 @@ span.text-red {
 .dish-container {
   margin-top: 15px;
   overflow: auto;
-  max-height: 70vh;
+  max-height: 65vh;
   padding: 20px 10px;
 }
 .dish {
@@ -356,6 +311,55 @@ span.text-red {
   background: transparent;
   border: none;
 }
+.optionsLogo {
+  font-size: 30px;
+  background-color: #f02d34;
+  border-radius: 900px;
+  color: white;
+  display: block;
+  height: 20px;
+  width: 35px;
+  cursor: pointer;
+  float: right;
+  transition: 0.2s ease;
+  position: relative;
+}
+.optionsLogo:hover {
+  scale: 1.1;
+}
+.optionsLogo span {
+  position: absolute;
+  left: 50%;
+  bottom: -15%;
+  translate: -50%;
+  font-size: 40px;
+  user-select: none;
+}
+.optionsContainer {
+  margin-top: 10px;
+}
+.options {
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.option {
+  border-radius: 10px;
+  width: fit-content;
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+.optionHead {
+  color: white;
+  position: relative;
+  top: -2px;
+}
+
 .cart-bottom {
   position: absolute;
   bottom: 12px;
@@ -434,11 +438,15 @@ span.text-red {
   color: #324d67;
   margin-top: 0px;
 }
-.dish-detail-desc .price {
+.price {
   font-weight: 700;
   font-size: 26px;
   margin-top: 30px;
   color: #f02d34;
+}
+.per-piece {
+  font-size: 15px;
+  color: hsl(0, 0%, 60%);
 }
 .price .old-price,
 .dish-price .old-price,
@@ -456,7 +464,7 @@ span.text-red {
   display: flex;
   gap: 30px;
 }
-.buttons .add-to-cart {
+.add-to-cart {
   padding: 10px 20px;
   border: 1px solid #f02d34;
   margin-top: 40px;
@@ -469,7 +477,7 @@ span.text-red {
   transform: scale(1, 1);
   transition: transform 0.5s ease;
 }
-.buttons .add-to-cart:hover {
+.add-to-cart:hover {
   transform: scale(1.1, 1.1);
 }
 .buttons .buy-now {
@@ -498,16 +506,21 @@ span.text-red {
   padding: 6px 12px;
   cursor: pointer;
 }
-.quantity-desc .minus {
+.minus {
   border-right: 1px solid gray;
   color: #f02d34;
 }
-.quantity-desc .num {
+.num {
   border-right: 1px solid gray;
   font-size: 20px;
 }
-.quantity-desc .plus {
+.plus {
   color: rgb(49, 168, 49);
+}
+.minus,
+.num,
+.plus {
+  user-select: none;
 }
 
 .maylike-dishes-wrapper {
@@ -665,7 +678,7 @@ span.text-red {
     width: 25%;
     height: 25%;
   }
-  .buttons .add-to-cart {
+  .add-to-cart {
     width: 150px;
   }
   .buttons .buy-now {

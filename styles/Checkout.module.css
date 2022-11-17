@@ -33,22 +33,27 @@
   width: 80%;
   margin-inline: auto;
   display: flex;
-  border-bottom: 1px solid hsla(0, 0%, 0%, 0.2);
-  border-left: 1px solid hsla(0, 0%, 0%, 0.2);
-  border-right: 1px solid hsla(0, 0%, 0%, 0.2);
-  border-bottom-left-radius: 60px;
   overflow: hidden;
   position: relative;
+}
+.dishRow img {
+  width: 30%;
+  max-height: 200px;
+  border-bottom-left-radius: 60px;
 }
 .info {
   flex: 1;
   padding: 10px;
   font-weight: 600;
+  border-bottom: 1px solid hsla(0, 0%, 0%, 0.2);
+  border-left: 1px solid hsla(0, 0%, 0%, 0.2);
+  border-right: 1px solid hsla(0, 0%, 0%, 0.2);
 }
-.dishRow img {
-  width: 30%;
-  max-height: 200px;
-  border-right: 1px solid gray;
+.info .options {
+  padding:20px;
+}
+.dishRow summary {
+  position: absolute;
 }
 .equations {
   display: flex;

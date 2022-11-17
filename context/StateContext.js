@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 
 const Context = createContext()
@@ -10,52 +10,96 @@ export const StateContext = ({ children }) => {
   const [totalQuantities, setTotalQuantities] = useState(0)
   const [qty, setQty] = useState(1)
 
+  // this is for persisting data
+  useEffect(async () => {
+    // these will after be filtered incase user modifies localStorage
+    const cart = JSON.parse(localStorage.getItem("cart")) || null
+    const totalQty = cart?.reduce((total, cartItem) => {
+      return total + cartItem.quantity
+    }, 0)
+    const totalPrice = cart?.reduce((total, cartItem) => {
+      return total + cartItem.price * cartItem.quantity
+    }, 0)
+    setCartItems(cart || [])
+    setTotalQuantities(totalQty || 0)
+    setTotalPrice(totalPrice || 0)
+  }, [])
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems))
+  }, [cartItems])
+
   let foundDish
 
-  const onAdd = (dish, quantity) => {
-    const checkDishInCart = cartItems.find((item) => item._id === dish._id)
+  const onAdd = (dish, quantity, chosenOptions) => {
+    const entries = Object.entries(chosenOptions)
+    for (let i = 0; i < entries.length; i++) {
+      const entry = entries[i]
+      if (entry[1] === "moderate") delete chosenOptions[entry[0]]
+    }
+    const checkDishInCart = cartItems.find(
+      (item) =>
+        item._id === dish._id &&
+        JSON.stringify(item.chosenOptions) === JSON.stringify(chosenOptions)
+    )
 
     setTotalPrice((prevTotalPrice) => prevTotalPrice + dish.price * quantity)
     setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity)
 
     if (checkDishInCart) {
       const updatedCartItems = cartItems.map((cartDish) => {
-        if (cartDish._id === dish._id)
+        if (
+          cartDish._id === dish._id &&
+          JSON.stringify(cartDish.chosenOptions) ===
+            JSON.stringify(chosenOptions)
+        ) {
           return {
             ...cartDish,
+            chosenOptions,
             quantity: cartDish.quantity + quantity,
           }
+        } else return cartDish
       })
 
       setCartItems(updatedCartItems)
     } else {
-      dish.quantity = quantity
-
-      setCartItems([...cartItems, { ...dish }])
+      setCartItems([...cartItems, { ...dish, quantity, chosenOptions }])
     }
 
-    toast.success(`${qty} ${dish.name} added to the cart.`)
+    toast.success(
+      `${quantity} ${dish.name}${quantity > 1 ? "s" : ""} added to the cart.`
+    )
   }
 
-  const onRemove = (id) => {
-    foundDish = cartItems.find((item) => item._id === id)
-    const newCartItems = cartItems.filter(item => item._id !== id )
+  const onRemove = (id, chosenOptions) => {
+    foundDish = cartItems.find(
+      (item) =>
+        item._id === id &&
+        JSON.stringify(item.chosenOptions) === JSON.stringify(chosenOptions)
+    )
+    const newCartItems = cartItems.filter(
+      (item) => item._id !== id || item.chosenOptions !== chosenOptions
+    )
 
-    setTotalPrice(prev => prev -= foundDish.price * foundDish.quantity)
-    setTotalQuantities(prev => prev -= foundDish.quantity)
-    
+    setTotalPrice((prev) => (prev -= foundDish.price * foundDish.quantity))
+    setTotalQuantities((prev) => (prev -= foundDish.quantity))
+
     setCartItems(newCartItems)
   }
 
-  const toggleCartItemQuantity = (id, value) => {
-    foundDish = cartItems.find((item) => item._id === id)
+  const toggleCartItemQuantity = (id, chosenOptions, value) => {
+    foundDish = cartItems.find(
+      (item) =>
+        item._id === id &&
+        JSON.stringify(item.chosenOptions) === JSON.stringify(chosenOptions)
+    )
 
     if (value === "inc") {
       setTotalPrice((prev) => prev + foundDish.price)
       setTotalQuantities((prev) => prev + 1)
       setCartItems((prev) => {
         return prev.map((item) =>
-          item._id === id
+          item._id === id &&
+          JSON.stringify(item.chosenOptions) === JSON.stringify(chosenOptions)
             ? { ...foundDish, quantity: foundDish.quantity + 1 }
             : item
         )
@@ -66,7 +110,8 @@ export const StateContext = ({ children }) => {
         setTotalQuantities((prev) => prev - 1)
         setCartItems((prev) => {
           return prev.map((item) =>
-            item._id === id
+            item._id === id &&
+            JSON.stringify(item.chosenOptions) === JSON.stringify(chosenOptions)
               ? { ...foundDish, quantity: foundDish.quantity - 1 }
               : item
           )
@@ -100,7 +145,7 @@ export const StateContext = ({ children }) => {
         decQty,
         onAdd,
         toggleCartItemQuantity,
-        onRemove
+        onRemove,
       }}
     >
       {children}

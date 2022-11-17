@@ -28,14 +28,6 @@
 .profileIcon:hover {
   scale: 1.1;
 }
-.modal {
-  position: fixed; 
-  left: 0;
-  top: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-}
 .profileList {
   z-index: 1;
   background-color: white;

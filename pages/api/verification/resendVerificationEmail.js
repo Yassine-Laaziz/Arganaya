@@ -3,14 +3,16 @@ import EmailTokenModel from "../../../models/Token"
 import UserModel from "../../../models/Users"
 import axios from "axios"
 import crypto from "crypto"
+import cookie from "cookie"
 
 const resend = async (req, res) => {
   try {
-    if (!req.body.jwtToken)
+    const jwtToken = cookie.parse(req.headers.cookie).jwtToken
+    if (!jwtToken)
       return res
         .status(400)
         .json({ info: { message: "something went wrong!", status: "Error" } })
-    const { _id } = jwt.verify(req.body.jwtToken, process.env.JWT_SECRET_KEY)
+    const { _id } = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY)
 
     const user = await UserModel.findById(_id)
     if (!user)

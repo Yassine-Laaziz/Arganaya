@@ -4,9 +4,8 @@ import { useState } from "react"
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai"
 import { useStateContext } from "../../context/StateContext"
 
-
 const DishDetails = ({ dish, similiarDishes }) => {
-  const { images, name, description, price } = dish
+  const { images, name, description, price, perPiece } = dish
   const [index, setIndex] = useState(0)
   const { qty, incQty, decQty, onAdd } = useStateContext()
 
@@ -40,7 +39,10 @@ const DishDetails = ({ dish, similiarDishes }) => {
           <h1>{name}</h1>
           <h4>Details: </h4>
           <p>{description}</p>
-          <p className="price">{price}dh</p>
+          <p>
+            <span className="price">{price}dh</span>
+            {perPiece && <span className="per-piece">/per piece</span>}
+          </p>
           <div className="quantity">
             <h3>Quantity:</h3>
             <p className="quantity-desc">

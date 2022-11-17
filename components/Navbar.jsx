@@ -1,31 +1,30 @@
-import styles from "../styles/Navbar.module.css"
+import styles from "../styles/Components/Navbar.module.css"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { AiOutlineShopping } from "react-icons/ai"
 import { CgProfile } from "react-icons/cg"
 import { useStateContext } from "../context/StateContext"
-import cookie from "cookie"
 import { Cart } from "./"
+import cookie from "cookie"
 
 const Navbar = () => {
   const { showCart, setShowCart, totalQuantities } = useStateContext()
-
-  const [display, setDisplay] = useState("none")
-  const modal = useRef()
-  useEffect(() => {
-    // this is wrapped in useEffect because "window" is not defined at first
-    window.addEventListener("click", (e) =>
-     e.target === modal.current && setDisplay("none")
-    )
-  }, [])
+  const [display, setDisplay] = useState(false)
 
   const [token, setToken] = useState(null)
+  useEffect(() => setToken(cookie.parse(document.cookie).jwtToken), [])
+
   const router = useRouter()
-  useEffect(() => setToken(cookie.parse(document.cookie).jwtToken) , [])
   const handleLogout = () => {
     document.cookie = "jwtToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC;"
     router.reload()
+  }
+
+  const handleClick = (e) => {
+    !display
+      ? setDisplay(true)
+      : e.target.classList.contains("modal") && setDisplay(false)
   }
 
   return (
@@ -35,23 +34,24 @@ const Navbar = () => {
       </p>
       <div className="middle">
         <CgProfile
+          tabIndex="0"
           className={styles.profileIcon}
-          onClick={() =>
-            setDisplay((prev) => (prev === "block" ? "none" : "block"))
-          }
+          onClick={(e) => handleClick(e)}
         />
-        <div className={styles.modal} style={{ display }} ref={modal}>
-          <div className={styles.profileList}>
-            {token ? (
-              <button onClick={() => handleLogout()}>Logout</button>
-            ) : (
-              <>
-                <Link href={"/Signup"}>Sign Up!</Link>
-                <Link href={"/Login"}>Login!</Link>
-              </>
-            )}
+        {display && (
+          <div className="modal" onClick={(e) => handleClick(e)}>
+            <div className={styles.profileList}>
+              {token ? (
+                <button onClick={() => handleLogout()}>Logout</button>
+              ) : (
+                <>
+                  <Link href={"/Signup"}>Sign Up!</Link>
+                  <Link href={"/Login"}>Login!</Link>
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <button className={styles.cartIcon} onClick={() => setShowCart(true)}>
         <AiOutlineShopping />

@@ -8,7 +8,6 @@ import {
   MdOutlineMarkEmailRead,
   MdOutlineSmsFailed,
 } from "react-icons/md"
-import cookie from "cookie"
 
 const Verify = () => {
   const router = useRouter()
@@ -62,10 +61,7 @@ const Verify = () => {
       if (remaining <= 0) {
         setRemaining(60)
         toast.loading("Sending..", { id: "loading" })
-        const response = await axios.post(
-          "/api/verification/resendVerificationEmail",
-          { jwtToken: cookie.parse(document.cookie).jwtToken }
-        )
+        const response = await axios.get("/api/verification/resendVerificationEmail")
         if (!response)
           return setInfo({
             message: "Something went wrong please retry or check again later",
