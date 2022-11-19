@@ -1,5 +1,6 @@
-import { useRef, useEffect } from "react"
+import styles from "../styles/Components/Cart.module.css"
 import Link from "next/link"
+import { useState } from "react"
 import {
   AiOutlineMinus,
   AiOutlinePlus,
@@ -9,6 +10,7 @@ import {
 import { TiDeleteOutline } from "react-icons/ti"
 import { useStateContext } from "../context/StateContext"
 import { urlFor } from "../lib/client"
+import transpileValue from "../lib/utils/transpileValue"
 
 const Cart = () => {
   const {
@@ -21,35 +23,31 @@ const Cart = () => {
   } = useStateContext()
 
   // ==Animate-Cart-On-Start==
-  const cartRef = useRef()
-  useEffect(() => (cartRef.current.style.animation = "toLeft .3s ease-out"), [])
+  const [animation, setAnimation] = useState(`${styles.toLeft} .3s ease-out`)
   // The User can only close the cart from the cart itself
   // so i'm defining a close cart function here
   const closeCart = () => {
-    cartRef.current.style.animation = "toRight .3s ease-out"
-
+    setAnimation(`${styles.toRight} .3s ease-out`)
     setTimeout(() => {
       setShowCart(false)
     }, 300)
   }
 
-  // this is wrapped in useEffect because "window" is not defined at first
-  const modal = useRef()
-  useEffect(() => {
-    window.addEventListener("click", (e) => e.target === modal.current && closeCart())
-  }, [])
+  const handleClick = (e) => {
+    if (e.target.classList.contains("modal")) closeCart()
+  }
 
   return (
-    <div className="cart-wrapper" ref={modal} >
-      <div className="cart-container" ref={cartRef}>
+    <div className="modal" onClick={(e) => handleClick(e)}>
+      <div className={styles.cartContainer} style={{ animation }}>
         <button
           type="button"
-          className="cart-heading"
+          className={styles.cartHeading}
           onClick={() => closeCart()}
         >
           <AiOutlineLeft />
-          <span className="heading">Your Cart</span>
-          <span className="cart-num-items">({totalQuantities} items)</span>
+          <span className={styles.heading}>Your Cart</span>
+          <span className={styles.cartNumItems}>({totalQuantities} items)</span>
         </button>
 
         {cartItems.length < 1 && (
@@ -66,8 +64,11 @@ const Cart = () => {
 
         <div className="dish-container">
           {cartItems.length >= 1 &&
-            cartItems.map((item) => (
-              <div className="dish" key={item._id}>
+            cartItems.map((item, i) => (
+              <div
+                className="dish"
+                key={`cart${item._id}${JSON.stringify(item.params) + i}`}
+              >
                 <img
                   src={urlFor(item.images[0])}
                   className="cart-dish-image"
@@ -76,24 +77,48 @@ const Cart = () => {
                 <div className="item-desc">
                   <div className="flex top">
                     <h5>{item.name}</h5>
-                    <h4>{item.price}dh</h4>
+                    <p>
+                      <span className="price">
+                        {item.option[1] || item.price}dh
+                      </span>
+                      {item.perPiece && (
+                        <span className="per-piece">/for each piece </span>
+                      )}
+                    </p>
                   </div>
-                  <div className="flex bottom">
+                  {/* Chosen Option */}
+                  {item.option && (
+                    <span className="option">{item.option[0]}</span>
+                  )}
+
+                  <div className="flex">
                     <div>
                       <p className="quantity-desc">
                         <span
                           className="minus"
+                          tabIndex="0"
                           onClick={() =>
-                            toggleCartItemQuantity(item._id, "dec")
+                            toggleCartItemQuantity({
+                              id: item._id,
+                              params: item.params,
+                              option: item.option,
+                              value: "dec",
+                            })
                           }
                         >
                           <AiOutlineMinus />
                         </span>
-                        <span className="num">{item.quantity}</span>
+                        <span className="num">{item.qty}</span>
                         <span
                           className="plus"
+                          tabIndex="0"
                           onClick={() =>
-                            toggleCartItemQuantity(item._id, "inc")
+                            toggleCartItemQuantity({
+                              id: item._id,
+                              params: item.params,
+                              option: item.option,
+                              value: "inc",
+                            })
                           }
                         >
                           <AiOutlinePlus />
@@ -103,11 +128,50 @@ const Cart = () => {
                     <button
                       type="btn"
                       className="remove-item"
-                      onClick={() => onRemove(item._id)}
+                      onClick={() =>
+                        onRemove(item._id, item.params, item.option)
+                      }
                     >
                       <TiDeleteOutline />
                     </button>
                   </div>
+                  {/* Parameters */}
+                  {JSON.stringify(item.params) !== "{}" && (
+                    <details className="paramsContainer">
+                      <summary className="paramsIcon">
+                        <span>...</span>
+                      </summary>
+                      <div className="params">
+                        {Object.entries(item.params).map((option, i) => (
+                          <div
+                            className="param"
+                            key={`${
+                              item.name + JSON.stringify(item.params) + i
+                            }cartOption`}
+                            style={{
+                              border: `5px solid ${transpileValue(
+                                option[1],
+                                "toColor"
+                              )}`,
+                            }}
+                          >
+                            <p
+                              style={{
+                                backgroundColor: transpileValue(
+                                  option[1],
+                                  "toColor"
+                                ),
+                              }}
+                              className="paramHead"
+                            >
+                              {option[1]}
+                            </p>
+                            <p className={styles.optionBottom}>{option[0]}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </details>
+                  )}
                 </div>
               </div>
             ))}

@@ -33,7 +33,6 @@ const verify = async (req, res) => {
       .status(200)
       .json({ message: "Email verified successfully!", status: "Success" })
   } catch (error) {
-    console.log(error)
     res.status(400).json(
       error || {
         message:

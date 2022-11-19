@@ -1,0 +1,22 @@
+.dishCard {
+  position: relative;
+  background-color: white;
+  color: #324d67;
+}
+.dishImage {
+  display: block;
+  border-radius: 15px;
+  background-color: #ebebeb;
+  transition: scale 0.5s ease, margin-bottom 0.3s;
+  cursor: pointer;
+}
+.dishImage:hover {
+  scale: 1.1;
+  margin-bottom: 10px;
+}
+
+.dishName {
+  font-size: 25px;
+  font-weight: 700;
+  text-align: center;
+}

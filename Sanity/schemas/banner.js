@@ -13,7 +13,7 @@ export default {
         },
         {
             name: 'buttonText',
-            title: 'ButtonText',
+            title: 'Button Text',
             type: 'string',
         },
         {
@@ -28,22 +28,22 @@ export default {
         },
         {
             name: 'smallText',
-            title: 'SmallText',
+            title: 'Small Text',
             type: 'string',
         },
         {
             name: 'midText',
-            title: 'MidText',
+            title: 'Mid Text',
             type: 'string'
         },
         {
             name: 'largeText1',
-            title: 'LargeText1',
+            title: 'Large Text1',
             type: 'string'
         },
         {
             name: 'largeText2',
-            title: 'LargeText2',
+            title: 'Large Text2',
             type: 'string'
         },
     ]
