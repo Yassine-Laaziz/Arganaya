@@ -67,7 +67,7 @@ const Cart = () => {
             cartItems.map((item, i) => (
               <div
                 className="dish"
-                key={`cart${item._id}${JSON.stringify(item.chosenOptions) + i}`}
+                key={`cart${item._id}${JSON.stringify(item.params) + i}`}
               >
                 <img
                   src={urlFor(item.images[0])}
@@ -78,36 +78,47 @@ const Cart = () => {
                   <div className="flex top">
                     <h5>{item.name}</h5>
                     <p>
-                      <span className="price">{item.price}dh</span>
+                      <span className="price">
+                        {item.option[1] || item.price}dh
+                      </span>
                       {item.perPiece && (
-                        <span className="per-piece">/per piece </span>
+                        <span className="per-piece">/for each piece </span>
                       )}
                     </p>
                   </div>
-                  <div className="flex bottom">
+                  {/* Chosen Option */}
+                  {item.option && (
+                    <span className="option">{item.option[0]}</span>
+                  )}
+
+                  <div className="flex">
                     <div>
                       <p className="quantity-desc">
                         <span
                           className="minus"
+                          tabIndex="0"
                           onClick={() =>
-                            toggleCartItemQuantity(
-                              item._id,
-                              item.chosenOptions,
-                              "dec"
-                            )
+                            toggleCartItemQuantity({
+                              id: item._id,
+                              params: item.params,
+                              option: item.option,
+                              value: "dec",
+                            })
                           }
                         >
                           <AiOutlineMinus />
                         </span>
-                        <span className="num">{item.quantity}</span>
+                        <span className="num">{item.qty}</span>
                         <span
                           className="plus"
+                          tabIndex="0"
                           onClick={() =>
-                            toggleCartItemQuantity(
-                              item._id,
-                              item.chosenOptions,
-                              "inc"
-                            )
+                            toggleCartItemQuantity({
+                              id: item._id,
+                              params: item.params,
+                              option: item.option,
+                              value: "inc",
+                            })
                           }
                         >
                           <AiOutlinePlus />
@@ -117,23 +128,25 @@ const Cart = () => {
                     <button
                       type="btn"
                       className="remove-item"
-                      onClick={() => onRemove(item._id, item.chosenOptions)}
+                      onClick={() =>
+                        onRemove(item._id, item.params, item.option)
+                      }
                     >
                       <TiDeleteOutline />
                     </button>
                   </div>
-                  {/* Options */}
-                  {JSON.stringify(item.chosenOptions) !== "{}" && (
-                    <details className="optionsContainer">
-                      <summary className="optionsLogo">
+                  {/* Parameters */}
+                  {JSON.stringify(item.params) !== "{}" && (
+                    <details className="paramsContainer">
+                      <summary className="paramsIcon">
                         <span>...</span>
                       </summary>
-                      <div className="options">
-                        {Object.entries(item.chosenOptions).map((option, i) => (
+                      <div className="params">
+                        {Object.entries(item.params).map((option, i) => (
                           <div
-                            className="option"
+                            className="param"
                             key={`${
-                              item.name + JSON.stringify(item.chosenOptions) + i
+                              item.name + JSON.stringify(item.params) + i
                             }cartOption`}
                             style={{
                               border: `5px solid ${transpileValue(
@@ -149,7 +162,7 @@ const Cart = () => {
                                   "toColor"
                                 ),
                               }}
-                              className="optionHead"
+                              className="paramHead"
                             >
                               {option[1]}
                             </p>

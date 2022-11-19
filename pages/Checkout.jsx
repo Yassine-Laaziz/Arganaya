@@ -18,12 +18,17 @@ const Checkout = ({ dishes }) => {
   }, [])
 
   const { cartItems } = useStateContext()
-  const cleanedCart = cartItems.filter((item) => {
-    let status = false
-    dishes.forEach((dish) => {
-      if (dish._id === item._id && dish.price === item.price) status = true
-    })
-    return status
+  const cleanedCart = []
+  cartItems.forEach((item) => {
+    const foundDish = dishes.find((dish) => dish._id === item._id)
+    if (foundDish) {
+      cleanedCart.push({
+        ...foundDish,
+        qty: item.qty,
+        option: item.option,
+        params: item.params,
+      })
+    }
   })
 
   return (
@@ -42,43 +47,37 @@ const Checkout = ({ dishes }) => {
             {cleanedCart.map((item) => (
               <div className={styles.dishRow} key={`Checkout${item.name}row`}>
                 <img
-                  key={`Checkout${item.name}image`}
                   src={urlFor(item.images[0])}
                   alt={`Arganaya ${item.name}`}
                 />
-                <div className={styles.info} key={`Checkout${item.name}info`}>
-                  <div
-                    className={styles.equations}
-                    key={`Checkout${item.name}equations`}
-                  >
-                    <span key={`Checkout${item.name}equations1`}>
+                <div className={styles.info}>
+                  <div className={styles.equations}>
+                    <span>
                       {/* 2 hummus tahini => 2 hummus tahini's' */}
-                      {item.quantity} {item.name}
-                      {item.quantity > 1 && "s"}
+                      {item.qty} {item.name}
+                      {item.qty > 1 && "s"}
                     </span>
-                    <span key={`Checkout${item.name}equations2`}>
-                      {item.quantity} * {item.price}dh ={" "}
-                      {item.quantity * item.price}dh
+                    <span>
+                      {item.qty} * {item.price}dh = {item.qty * item.price}dh
                     </span>
                   </div>
-                  <p
-                    className={styles.description}
-                    key={`Checkout${item.name}description`}
-                  >
-                    {item.description}
-                  </p>
-                  {/* Options */}
-                  {JSON.stringify(item.chosenOptions) !== "{}" && (
-                    <details className="optionsContainer">
-                      <summary className="optionsLogo">
+                  <p className={styles.description}>{item.description}</p>
+                  {/* Chosen Option */}
+                  <div className={`option ${styles.option}`}>
+                    {item.option[0]}
+                  </div>
+                  {/* Params */}
+                  {JSON.stringify(item.params) !== "{}" && (
+                    <details className="paramsContainer">
+                      <summary className="paramsIcon">
                         <span>...</span>
                       </summary>
-                      <div className={`options ${styles.options}`}>
-                        {Object.entries(item.chosenOptions).map((option, i) => (
+                      <div className={`params ${styles.options}`}>
+                        {Object.entries(item.params).map((option, i) => (
                           <div
-                            className={`option`}
+                            className="param"
                             key={`${
-                              item.name + JSON.stringify(item.chosenOptions) + i
+                              item.name + JSON.stringify(item.params) + i
                             }CheckoutOption`}
                             style={{
                               border: `5px solid ${transpileValue(

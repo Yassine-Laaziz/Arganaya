@@ -42,8 +42,14 @@ export default {
       type: "text",
     },
     {
+      name: "params",
+      title: "Parameters",
+      type: "array",
+      of: [{ type: "string" }],
+    },
+    {
       name: "options",
-      title: "Options",
+      title: "Options and their prices",
       type: "array",
       of: [{ type: "string" }],
     },

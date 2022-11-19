@@ -48,12 +48,15 @@
   border-bottom: 1px solid hsla(0, 0%, 0%, 0.2);
   border-left: 1px solid hsla(0, 0%, 0%, 0.2);
   border-right: 1px solid hsla(0, 0%, 0%, 0.2);
+  position: relative;
 }
 .info .options {
   padding:20px;
 }
 .dishRow summary {
   position: absolute;
+  bottom:5px;
+  left:20px;
 }
 .equations {
   display: flex;
@@ -65,6 +68,10 @@
 }
 .description {
   margin-top: 30px;
+}
+.option {
+  margin: 20px 0 30px 10px;
+  width: fit-content;
 }
 
 .Checkout form {
