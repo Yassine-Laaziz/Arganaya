@@ -51,20 +51,23 @@ a {
 
 .track {
   position: absolute;
+  left: 100%;
   white-space: nowrap;
-  will-change: transform;
-  animation: marquee 15s linear infinite;
-  width: 180%;
+  will-change: translate;
+  animation: marquee var(--time) linear infinite;
+  display: flex;
+  justify-content: right;
+  gap:20px;
 }
 .track:hover {
   animation-play-state: paused;
 }
 @keyframes marquee {
   from {
-    transform: translateX(0);
+    left: 100%;
   }
   to {
-    transform: translateX(-50%);
+    left: calc(var(--width) * -1)
   }
 }
 
@@ -619,10 +622,6 @@ span.text-red {
 
   .total h3 {
     font-size: 20px;
-  }
-  .track {
-    animation: marquee 10s linear infinite;
-    width: 550%;
   }
   .success-wrapper,
   .cancel-wrapper {

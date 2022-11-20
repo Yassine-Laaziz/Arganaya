@@ -3,7 +3,7 @@ import Link from "next/link"
 import { urlFor } from "../lib/client"
 
 const Pack = ({ pack }) => {
-  const { images, slug } = pack
+  const { images, slug, name } = pack
 
   return (
     <Link href={`/Pack/${slug.current}`}>
@@ -15,6 +15,7 @@ const Pack = ({ pack }) => {
           width="450px"
           height="350px"
         />
+        <p className={styles.dishName}>{name}</p>
       </div>
     </Link>
   )

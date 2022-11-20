@@ -21,7 +21,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
     for (let i = 0; i < options.length; i++) {
       const valuePair = options[i].split(":")
       const extractedNum = +valuePair[1]?.match(/\d+$/)[0]
-      optionsObj[valuePair[0] || 'problem occured'] = extractedNum || null
+      optionsObj[valuePair[0] || "problem occured"] = extractedNum || null
     }
     options = optionsObj
   } else options = null
@@ -112,7 +112,9 @@ const DishDetails = ({ dish, similiarDishes }) => {
                   key={`${name}options${i}`}
                   className={styles.option}
                   chosen={
-                    chosenOption[0] && chosenOption[0] === mappedOption[0] ? "chosen" : undefined
+                    chosenOption[0] && chosenOption[0] === mappedOption[0]
+                      ? "chosen"
+                      : undefined
                   }
                 >
                   <input
@@ -172,7 +174,13 @@ const DishDetails = ({ dish, similiarDishes }) => {
       <div className={styles.maylikeDishesWrapper}>
         <h2>You May Also Like:</h2>
         <div className="marquee">
-          <div className={`${styles.maylikeDishesContainer} track`}>
+          <div
+            className={`${styles.maylikeDishesContainer} track`}
+            style={{
+              "--width": `${similiarDishes.length * (250 + 20)}px`,
+              "--time": `${similiarDishes.length * 5}s`,
+            }}
+          >
             {similiarDishes.map((similiarDish) => {
               if (similiarDish._id !== dish._id)
                 return <Dish key={similiarDish._id} dish={similiarDish} />
