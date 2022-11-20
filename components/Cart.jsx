@@ -99,10 +99,10 @@ const Cart = () => {
                           tabIndex="0"
                           onClick={() =>
                             toggleCartItemQuantity({
-                              id: item._id,
+                              dish: item,
+                              value: -1,
                               params: item.params,
                               option: item.option,
-                              value: "dec",
                             })
                           }
                         >
@@ -114,10 +114,10 @@ const Cart = () => {
                           tabIndex="0"
                           onClick={() =>
                             toggleCartItemQuantity({
-                              id: item._id,
+                              dish: item,
+                              value: 1,
                               params: item.params,
                               option: item.option,
-                              value: "inc",
                             })
                           }
                         >
