@@ -35,50 +35,79 @@ export const StateContext = ({ children }) => {
     // here we redefine variables to avoid using a state
     const params = paramsState
     const option = optionState
-    // here we remove 'moderate' because it may interrupt the comparing part
-    const keys = Object.keys(paramsState)
-    for (let i = 0; i < keys.length; i++) {
-      const param = keys[i]
-      if (params[param] === "moderate") delete params[param]
+    if (dish._type === "dish") {
+      // here we remove 'moderate' because it may interrupt the comparing system
+      const keys = Object.keys(params)
+      for (let i = 0; i < keys.length; i++) {
+        const param = keys[i]
+        if (params[param] === "moderate") delete params[param]
+      }
     }
 
     setTotalPrice((prevTotalPrice) => prevTotalPrice + dish.price * qty)
     setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + qty)
 
-    let dishInCart = false
+    const found = cartItems.find((item) => {
+      if (dish._type === "pack") {
+        return item._id === dish._id && item._type === "pack"
+      } else {
+        return (
+          item._id === dish._id &&
+          JSON.stringify(item.params) === JSON.stringify(params) &&
+          item.option[0] === option[0]
+        )
+      }
+    })
+    console.log(found)
+
     const updatedCartItems = cartItems.map((item) => {
-      if (
-        item._id === dish._id &&
-        JSON.stringify(item.params) === JSON.stringify(params) &&
-        item.option[0] === option[0]
-      ) {
-        dishInCart = true
-        return {
-          ...item,
-          qty: item.qty + qty,
+      if (item._id === dish._id) {
+        if (item._type === "pack") {
+          return {
+            ...item,
+            qty: item.qty + qty,
+          }
+        } else if (
+          JSON.stringify(item.params) === JSON.stringify(params) &&
+          item.option[0] === option[0]
+        ) {
+          return {
+            ...item,
+            qty: item.qty + qty,
+          }
         }
-      } else return item
+      } else {
+        return item
+      }
     })
 
-    dishInCart
-      ? setCartItems(updatedCartItems)
-      : setCartItems([...cartItems, { ...dish, qty, params, option }])
+    if (found) setCartItems(updatedCartItems)
+    else {
+      dish._type === "dish"
+        ? setCartItems((prev) => [...prev, { ...dish, qty, params, option }])
+        : setCartItems((prev) => [...prev, { ...dish, qty }])
+    }
 
     toast.success(`${qty} ${dish.name}${qty > 1 ? "s" : ""} added to the cart.`)
   }
 
-  const onRemove = (id, params, option) => {
+  const onRemove = ({ dish, params, option }) => {
     const newCartItems = []
     for (let i = 0; i < cartItems.length; i++) {
       const item = cartItems[i]
-      if (
-        item._id === id &&
-        JSON.stringify(item.params) === JSON.stringify(params) &&
-        item.option[0] === option[0]
-      ) {
-        setTotalPrice((prev) => (prev -= item.price * item.qty))
-        setTotalQuantities((prev) => (prev -= item.qty))
-      } else newCartItems.push(item)
+      if (item._id === dish._id) {
+        if (dish._type === "pack") {
+          setTotalPrice((prev) => (prev -= item.price * item.qty))
+          setTotalQuantities((prev) => (prev -= item.qty))
+        } else if (
+          JSON.stringify(item.params) === JSON.stringify(params) &&
+          item.option && 
+          item.option[0] === option[0]
+        ) {
+          setTotalPrice((prev) => (prev -= item.price * item.qty))
+          setTotalQuantities((prev) => (prev -= item.qty))
+        } else newCartItems.push(item)
+      }
     }
     setCartItems(newCartItems)
   }

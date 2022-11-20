@@ -79,7 +79,7 @@ const Cart = () => {
                     <h5>{item.name}</h5>
                     <p>
                       <span className="price">
-                        {item.option[1] || item.price}dh
+                        {item.option ? item.option[1] : item.price}dh
                       </span>
                       {item.perPiece && (
                         <span className="per-piece">/for each piece </span>
@@ -129,14 +129,18 @@ const Cart = () => {
                       type="btn"
                       className="remove-item"
                       onClick={() =>
-                        onRemove(item._id, item.params, item.option)
+                        onRemove({
+                          dish: item,
+                          params: item.params,
+                          option: item.option,
+                        })
                       }
                     >
                       <TiDeleteOutline />
                     </button>
                   </div>
                   {/* Parameters */}
-                  {JSON.stringify(item.params) !== "{}" && (
+                  {item.params && JSON.stringify(item.params) !== "{}" && (
                     <details className="paramsContainer">
                       <summary className="paramsIcon">
                         <span>...</span>
