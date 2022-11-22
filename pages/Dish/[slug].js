@@ -31,15 +31,11 @@ const DishDetails = ({ dish, similiarDishes }) => {
   const [displayParams, setDisplayParams] = useState(false)
   const [chosenParams, setChosenParams] = useState({})
   const [chosenOption, setChosenOption] = useState(
-    options ? Object.entries(options)[0] : []
+    options ? Object.keys(options)[0] : ""
   )
   const [priceState, setPriceState] = useState(
     options ? Object.values(options)[0] : price
   )
-
-    useEffect(() => {
-      console.log(priceState, chosenOption)
-    }, [priceState, chosenOption])
 
   const paramsChange = (e, param) => {
     const status = transpileValue(e.target.valueAsNumber, "toText")
@@ -47,7 +43,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
   }
   const optionChange = (e, newPrice) => {
     setPriceState(newPrice)
-    setChosenOption([e.target.value, newPrice])
+    setChosenOption(e.target.value)
   }
 
   const toggleDisplay = (e, checkModal = true) => {
@@ -118,9 +114,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
                   key={`${name}options${i}`}
                   className={styles.option}
                   chosen={
-                    chosenOption[0] && chosenOption[0] === mappedOption[0]
-                      ? "chosen"
-                      : undefined
+                    chosenOption === mappedOption[0] ? "chosen" : undefined
                   }
                 >
                   <input
@@ -155,6 +149,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
                   dish,
                   paramsState: chosenParams,
                   optionState: chosenOption,
+                  priceState,
                 })
               }
             >
@@ -168,6 +163,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
                   dish,
                   paramsState: chosenParams,
                   optionState: chosenOption,
+                  priceState,
                 })
                 setShowCart(true)
               }}

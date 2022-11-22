@@ -79,7 +79,7 @@ const Cart = () => {
                     <h5>{item.name}</h5>
                     <p>
                       <span className="price">
-                        {item.option ? item.option[1] : item.price}dh
+                        {item.price}dh
                       </span>
                       {item.perPiece && (
                         <span className="per-piece">/for each piece </span>
@@ -88,7 +88,7 @@ const Cart = () => {
                   </div>
                   {/* Chosen Option */}
                   {item.option && (
-                    <span className="option">{item.option[0]}</span>
+                    <span className="option">{item.option}</span>
                   )}
 
                   <div className="flex">
@@ -101,8 +101,6 @@ const Cart = () => {
                             toggleCartItemQuantity({
                               dish: item,
                               value: -1,
-                              params: item.params,
-                              option: item.option,
                             })
                           }
                         >
@@ -116,8 +114,6 @@ const Cart = () => {
                             toggleCartItemQuantity({
                               dish: item,
                               value: 1,
-                              params: item.params,
-                              option: item.option,
                             })
                           }
                         >
@@ -131,8 +127,6 @@ const Cart = () => {
                       onClick={() =>
                         onRemove({
                           dish: item,
-                          params: item.params,
-                          option: item.option,
                         })
                       }
                     >
