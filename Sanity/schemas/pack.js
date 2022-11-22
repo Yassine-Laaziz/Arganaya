@@ -1,6 +1,6 @@
 export default {
-  name: "dish",
-  title: "Dish",
+  name: "pack",
+  title: "Pack",
   type: "document",
   fields: [
     {
@@ -32,29 +32,9 @@ export default {
       type: "number",
     },
     {
-      name: "perPiece",
-      title: "for one piece",
-      type: "boolean",
-    },
-    {
       name: "description",
       title: "Description",
       type: "text",
     },
-    {
-      name: "params",
-      title: "Parameters",
-      type: "array",
-      of: [{ type: "string" }],
-    },
-    {
-      name: "options",
-      title: "Options and their prices",
-      type: "array",
-      of: [{ type: "string" }],
-    },
   ],
-  initialValue: {
-    perPiece: false,
-  },
 }

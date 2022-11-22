@@ -79,7 +79,7 @@ const Cart = () => {
                     <h5>{item.name}</h5>
                     <p>
                       <span className="price">
-                        {item.option[1] || item.price}dh
+                        {item.price}dh
                       </span>
                       {item.perPiece && (
                         <span className="per-piece">/for each piece </span>
@@ -88,7 +88,7 @@ const Cart = () => {
                   </div>
                   {/* Chosen Option */}
                   {item.option && (
-                    <span className="option">{item.option[0]}</span>
+                    <span className="option">{item.option}</span>
                   )}
 
                   <div className="flex">
@@ -99,10 +99,8 @@ const Cart = () => {
                           tabIndex="0"
                           onClick={() =>
                             toggleCartItemQuantity({
-                              id: item._id,
-                              params: item.params,
-                              option: item.option,
-                              value: "dec",
+                              dish: item,
+                              value: -1,
                             })
                           }
                         >
@@ -114,10 +112,8 @@ const Cart = () => {
                           tabIndex="0"
                           onClick={() =>
                             toggleCartItemQuantity({
-                              id: item._id,
-                              params: item.params,
-                              option: item.option,
-                              value: "inc",
+                              dish: item,
+                              value: 1,
                             })
                           }
                         >
@@ -129,14 +125,16 @@ const Cart = () => {
                       type="btn"
                       className="remove-item"
                       onClick={() =>
-                        onRemove(item._id, item.params, item.option)
+                        onRemove({
+                          dish: item,
+                        })
                       }
                     >
                       <TiDeleteOutline />
                     </button>
                   </div>
                   {/* Parameters */}
-                  {JSON.stringify(item.params) !== "{}" && (
+                  {item.params && JSON.stringify(item.params) !== "{}" && (
                     <details className="paramsContainer">
                       <summary className="paramsIcon">
                         <span>...</span>

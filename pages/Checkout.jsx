@@ -45,7 +45,12 @@ const Checkout = ({ dishes }) => {
         <>
           <section className={styles.dishesContainer}>
             {cleanedCart.map((item) => (
-              <div className={styles.dishRow} key={`Checkout${item.name}row`}>
+              <div
+                className={styles.dishRow}
+                key={`${item.option}${item.name}${JSON.stringify(
+                  item.params
+                )}row`}
+              >
                 <img
                   src={urlFor(item.images[0])}
                   alt={`Arganaya ${item.name}`}
@@ -53,9 +58,7 @@ const Checkout = ({ dishes }) => {
                 <div className={styles.info}>
                   <div className={styles.equations}>
                     <span>
-                      {/* 2 hummus tahini => 2 hummus tahini's' */}
                       {item.qty} {item.name}
-                      {item.qty > 1 && "s"}
                     </span>
                     <span>
                       {item.qty} * {item.price}dh = {item.qty * item.price}dh

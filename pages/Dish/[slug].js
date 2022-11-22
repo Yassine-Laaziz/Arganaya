@@ -1,7 +1,7 @@
 import styles from "../../styles/Dish.module.css"
 import { urlFor, client } from "../../lib/client"
 import { Dish } from "../../components"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai"
 import { IoOptions } from "react-icons/io5"
 import { CgCloseR } from "react-icons/cg"
@@ -21,7 +21,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
     for (let i = 0; i < options.length; i++) {
       const valuePair = options[i].split(":")
       const extractedNum = +valuePair[1]?.match(/\d+$/)[0]
-      optionsObj[valuePair[0] || 'problem occured'] = extractedNum || null
+      optionsObj[valuePair[0] || "problem occured"] = extractedNum || null
     }
     options = optionsObj
   } else options = null
@@ -31,7 +31,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
   const [displayParams, setDisplayParams] = useState(false)
   const [chosenParams, setChosenParams] = useState({})
   const [chosenOption, setChosenOption] = useState(
-    options ? Object.entries(options)[0] : null
+    options ? Object.keys(options)[0] : ""
   )
   const [priceState, setPriceState] = useState(
     options ? Object.values(options)[0] : price
@@ -43,7 +43,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
   }
   const optionChange = (e, newPrice) => {
     setPriceState(newPrice)
-    setChosenOption([e.target.value, newPrice])
+    setChosenOption(e.target.value)
   }
 
   const toggleDisplay = (e, checkModal = true) => {
@@ -98,12 +98,14 @@ const DishDetails = ({ dish, similiarDishes }) => {
             {perPiece && <span className="per-piece">/for each piece</span>}
           </p>
           <div className={styles.customize}>
-            <h3>Customize:</h3>
-            <IoOptions
-              className={styles.paramsIcon}
-              onClick={(e) => toggleDisplay(e)}
-              tabIndex="0"
-            />
+            {(options || params?.length > 1) && <h3>Customize:</h3>}
+            {params?.length > 1 && (
+              <IoOptions
+                className={styles.paramsIcon}
+                onClick={(e) => toggleDisplay(e)}
+                tabIndex="0"
+              />
+            )}
           </div>
           {options && (
             <div className={styles.options}>
@@ -112,7 +114,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
                   key={`${name}options${i}`}
                   className={styles.option}
                   chosen={
-                    chosenOption[0] && chosenOption[0] === mappedOption[0] ? "chosen" : undefined
+                    chosenOption === mappedOption[0] ? "chosen" : undefined
                   }
                 >
                   <input
@@ -147,6 +149,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
                   dish,
                   paramsState: chosenParams,
                   optionState: chosenOption,
+                  priceState,
                 })
               }
             >
@@ -160,6 +163,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
                   dish,
                   paramsState: chosenParams,
                   optionState: chosenOption,
+                  priceState,
                 })
                 setShowCart(true)
               }}
@@ -172,7 +176,13 @@ const DishDetails = ({ dish, similiarDishes }) => {
       <div className={styles.maylikeDishesWrapper}>
         <h2>You May Also Like:</h2>
         <div className="marquee">
-          <div className={`${styles.maylikeDishesContainer} track`}>
+          <div
+            className={`${styles.maylikeDishesContainer} track`}
+            style={{
+              "--width": `${similiarDishes.length * (250 + 20)}px`,
+              "--time": `${similiarDishes.length * 5}s`,
+            }}
+          >
             {similiarDishes.map((similiarDish) => {
               if (similiarDish._id !== dish._id)
                 return <Dish key={similiarDish._id} dish={similiarDish} />
