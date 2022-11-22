@@ -31,7 +31,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
   const [displayParams, setDisplayParams] = useState(false)
   const [chosenParams, setChosenParams] = useState({})
   const [chosenOption, setChosenOption] = useState(
-    options ? Object.entries(options)[0] : null
+    options ? Object.entries(options)[0] : []
   )
   const [priceState, setPriceState] = useState(
     options ? Object.values(options)[0] : price
@@ -98,12 +98,14 @@ const DishDetails = ({ dish, similiarDishes }) => {
             {perPiece && <span className="per-piece">/for each piece</span>}
           </p>
           <div className={styles.customize}>
-            <h3>Customize:</h3>
-            <IoOptions
-              className={styles.paramsIcon}
-              onClick={(e) => toggleDisplay(e)}
-              tabIndex="0"
-            />
+            {(options || params?.length > 1) && <h3>Customize:</h3>}
+            {params?.length > 1 && (
+              <IoOptions
+                className={styles.paramsIcon}
+                onClick={(e) => toggleDisplay(e)}
+                tabIndex="0"
+              />
+            )}
           </div>
           {options && (
             <div className={styles.options}>
