@@ -1,7 +1,7 @@
 import styles from "../../styles/Dish.module.css"
 import { urlFor, client } from "../../lib/client"
 import { Dish } from "../../components"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai"
 import { IoOptions } from "react-icons/io5"
 import { CgCloseR } from "react-icons/cg"
@@ -36,6 +36,10 @@ const DishDetails = ({ dish, similiarDishes }) => {
   const [priceState, setPriceState] = useState(
     options ? Object.values(options)[0] : price
   )
+
+    useEffect(() => {
+      console.log(priceState, chosenOption)
+    }, [priceState, chosenOption])
 
   const paramsChange = (e, param) => {
     const status = transpileValue(e.target.valueAsNumber, "toText")

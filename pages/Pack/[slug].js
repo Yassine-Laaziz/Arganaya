@@ -65,7 +65,7 @@ const PackDetails = ({ pack, otherPacks }) => {
               type="button"
               className={styles.buyNow}
               onClick={() => {
-                onAdd({  dish: pack })
+                onAdd({ dish: pack })
                 setShowCart(true)
               }}
             >
@@ -74,23 +74,25 @@ const PackDetails = ({ pack, otherPacks }) => {
           </div>
         </div>
       </div>
-      <div className={styles.maylikeDishesWrapper}>
-        <h2>You May Also Like:</h2>
-        <div className="marquee">
-          <div
-            className={`${styles.maylikeDishesContainer} track`}
-            style={{
-              "--width": `${otherPacks.length * (250 + 20)}px`,
-              "--time": `${otherPacks.length * 5}s`,
-            }}
-          >
-            {otherPacks.map((otherPack) => {
-              if (otherPack._id !== pack._id)
-                return <Pack key={otherPack._id} pack={otherPack} />
-            })}
+      {otherPacks.length >= 2 && (
+        <div className={styles.maylikeDishesWrapper}>
+          <h2>You May Also Like:</h2>
+          <div className="marquee">
+            <div
+              className={`${styles.maylikeDishesContainer} track`}
+              style={{
+                "--width": `${otherPacks.length * (250 + 20)}px`,
+                "--time": `${otherPacks.length * 5}s`,
+              }}
+            >
+              {otherPacks.map((otherPack) => {
+                if (otherPack._id !== pack._id)
+                  return <Pack key={otherPack._id} pack={otherPack} />
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

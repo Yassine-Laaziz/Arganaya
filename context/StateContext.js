@@ -62,7 +62,7 @@ export const StateContext = ({ children }) => {
         if (item._type === "pack" && dish._type === "pack") {
           return { ...item, qty: item.qty + qty }
         } else if (
-          JSON.stringify(item.params) === JSON.stringify(params) &&
+          JSON.stringify(item.params) === JSON.stringify(params) && 
           item.option[0] === option[0]
         ) {
           return {
@@ -89,14 +89,14 @@ export const StateContext = ({ children }) => {
       const item = cartItems[i]
       if (item._id === dish._id) {
         if (dish._type === "pack") {
-          setTotalPrice((prev) => (prev -= item.price * item.qty))
+          setTotalPrice((prev) => (prev -= (option[1] || item.price) * item.qty))
           setTotalQuantities((prev) => (prev -= item.qty))
         } else if (
           JSON.stringify(item.params) === JSON.stringify(params) &&
           item.option &&
           item.option[0] === option[0]
         ) {
-          setTotalPrice((prev) => (prev -= item.price * item.qty))
+          setTotalPrice((prev) => (prev -= (option[1] || item.price) * item.qty))
           setTotalQuantities((prev) => (prev -= item.qty))
         } else newCartItems.push(item)
       } else newCartItems.push(item)
@@ -106,10 +106,15 @@ export const StateContext = ({ children }) => {
 
   const toggleCartItemQuantity = ({ dish, value, params, option }) => {
     const updatedCartItems = cartItems.map((item) => {
-      if (item._id === dish._id) {
+    const ableToDecrease = () => {
+      if (value < 0 && item.qty > 1) return true
+      if (value < 0 && item.qty <= 1) return false
+      else return true
+    }
+      if (item._id === dish._id && ableToDecrease()) {
         if (item._type === "pack" && dish._type === "pack") {
           setTotalQuantities((prev) => prev + value)
-          setTotalPrice((prev) => prev + value * item.price)
+          setTotalPrice((prev) => prev + value * (option[1] || item.price))
           return { ...item, qty: item.qty + value }
         } else if (
           JSON.stringify(item.params) === JSON.stringify(params) &&
