@@ -214,30 +214,21 @@ const Checkout = ({ dishes, packs }) => {
             <input
               placeholder="Address Line 1"
               type="text"
-              defaultValue={
-                JSON.parse(localStorage.getItem("orderingReq"))?.addressLine1 ||
-                ""
-              }
+              value={userInfo.addressLine1}
               onChange={(e) => handleChange(e, "addressLine1")}
               required
             />
             <input
               placeholder="Address Line 2"
               type="text"
-              defaultValue={
-                JSON.parse(localStorage.getItem("orderingReq"))?.addressLine2 ||
-                ""
-              }
+              value={userInfo.addressLine2}
               onChange={(e) => handleChange(e, "addressLine2")}
               required
             />
             <input
               placeholder="You phone number (in order to contact you)"
               type="number"
-              defaultValue={
-                JSON.parse(localStorage.getItem("orderingReq"))?.phoneNumber ||
-                ""
-              }
+              value={userInfo.phoneNumber}
               onChange={(e) => handleChange(e, "phoneNumber")}
               required
             />
