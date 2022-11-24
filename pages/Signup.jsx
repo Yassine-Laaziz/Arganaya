@@ -40,7 +40,7 @@ const SignUp = () => {
     if (!isLastStep) return next()
     setIsLoading(true)
     axios
-      .post(`/api/register`, data)
+      .post(`/api/auth/register`, data)
       .then(() => {
         toast.success("Email Sent Successfully", {
           style: { textAlign: "center", color: "green" },

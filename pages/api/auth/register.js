@@ -1,9 +1,9 @@
-import { connect } from "../../lib/mongodb"
-import UserModel from "../../models/Users"
-import EmailTokenModel from "../../models/Token"
+import { connect } from "../../../lib/mongodb"
+import UserModel from "../../../models/Users"
+import EmailTokenModel from "../../../models/Token"
 import bcrypt from "bcrypt"
 import validator from "validator"
-import createToken from "../../lib/createToken"
+import { createToken } from "../../../lib/jwt"
 import crypto from "crypto"
 import axios from "axios"
 
@@ -66,7 +66,7 @@ const handler = async (req, res) => {
     const User = await UserModel.create(user)
 
     // jwt Token
-    const { jwtToken, serialized } = createToken(User._id)
+    const { jwtToken, serialized } = await createToken({ id: User._id })
 
     res.setHeader("Set-Cookie", serialized)
     res.status(200).send(jwtToken)
@@ -78,7 +78,7 @@ const handler = async (req, res) => {
     })
 
     axios.post(
-      `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
+      `${process.env.BASE_URL}/api/auth/verification/sendVerificationEmail`,
       { emailToken }
     )
   } catch (error) {

@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer"
-import { connect } from "../../../lib/mongodb"
-import UserModel from "../../../models/Users"
+import { connect } from "../../../../lib/mongodb"
+import UserModel from "../../../../models/Users"
 
 const sendVerificationEmail = async (req, res) => {
   try {

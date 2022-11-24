@@ -2,21 +2,10 @@ import styles from "../styles/Checkout.module.css"
 import { useStateContext } from "../context/StateContext"
 import { BsCartXFill } from "react-icons/bs"
 import Link from "next/link"
-import axios from "axios"
-import { useRouter } from "next/router"
-import { useEffect } from "react"
 import { urlFor, client } from "../lib/client"
 import transpileValue from "../lib/utils/transpileValue"
 
 const Checkout = ({ dishes }) => {
-  const router = useRouter()
-  useEffect(() => {
-    axios
-      .get("/api/checkAuthorized")
-      .then((res) => !res.data.verified && router.push("/Verify"))
-      .catch(() => router.push("/Verify"))
-  }, [])
-
   const { cartItems } = useStateContext()
   const cleanedCart = []
   cartItems.forEach((item) => {
@@ -110,7 +99,7 @@ const Checkout = ({ dishes }) => {
               </div>
             ))}
           </section>
-          <form action="/api/sendOrderEmail" method="post">
+          <form>
             <input
               placeholder="Address Line 1"
               type="text"
