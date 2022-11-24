@@ -9,7 +9,7 @@ const Pack = ({ pack }) => {
     <Link href={`/Pack/${slug.current}`}>
       <div className={styles.dishCard} tabIndex="0">
         <img
-          src={urlFor(images[0])}
+          src={images && urlFor(images[0])}
           alt="Arganaya"
           className={styles.dishImage}
           width="450px"

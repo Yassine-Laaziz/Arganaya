@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 
 const Home = ({ dishes, packs, bannerData }) => {
   bannerData = [bannerData, dishes[0].slug.current]
-
+  
   const [enoughWidth, setEnoughWidth] = useState(null)
   useEffect(() => {
     setEnoughWidth(window.innerWidth >= packs?.length * 470)
@@ -13,6 +13,7 @@ const Home = ({ dishes, packs, bannerData }) => {
       setEnoughWidth(window.innerWidth >= packs?.length * 470)
     })
   }, [])
+
 
   return (
     <>

@@ -51,12 +51,7 @@
   position: relative;
 }
 .info .options {
-  padding:20px;
-}
-.dishRow summary {
-  position: absolute;
-  bottom:5px;
-  left:20px;
+  padding: 20px;
 }
 .equations {
   display: flex;
@@ -70,10 +65,13 @@
   margin-top: 30px;
 }
 .option {
-  margin: 20px 0 30px 10px;
+  margin-top: 10px;
   width: fit-content;
 }
 
+.Checkout h2 {
+  padding-block: 10px;
+}
 .Checkout form {
   margin-top: 100px;
   margin-inline: auto;
@@ -85,19 +83,38 @@
   flex-direction: column;
   gap: 20px;
 }
+
+.Checkout h2 {
+  text-align: center;
+}
+
 .Checkout form input {
-    padding-left: 4px;
-    padding-block: 10px;
+  padding-left: 4px;
+  padding-block: 10px;
 }
 .Checkout form button {
-    margin-inline: auto;
-    width: fit-content;
-    font-size: 30px;
-    font-weight: 600;
-    padding-block:5px;
-    padding-inline: 25px;
-    cursor: pointer;
-    background-color: hsla(180, 100%, 50%, .2);
-    border: 2px solid cyan;
-    border-radius: 10px;
+  margin-inline: auto;
+  width: fit-content;
+  font-size: 30px;
+  font-weight: 600;
+  padding-block: 5px;
+  padding-inline: 25px;
+  cursor: pointer;
+  background-color: hsla(180, 100%, 50%, 0.2);
+  border: 2px solid cyan;
+  border-radius: 10px;
+  transition: .2s;
+}
+.Checkout form button:hover {
+  scale:1.1
+}
+
+.Checkout form .errorMsg {
+  text-align: center;
+  color: white;
+  font-weight: 600;
+  padding: 20px 5px;
+  background-color: hsla(0, 100%, 60%);
+  box-shadow: 0 0 2px 2px inset hsla(10, 100%, 80%,);
+  border-radius: 4px;
 }

@@ -53,7 +53,7 @@ const Cart = () => {
         {cartItems.length < 1 && (
           <div className="empty-cart">
             <AiOutlineShopping size={150} />
-            <h3>You Shopping Bag is Empty</h3>
+            <h3>Your Shopping Bag is Empty</h3>
             <Link href="/">
               <button type="button" className="btn" onClick={() => closeCart()}>
                 Continue Shopping
