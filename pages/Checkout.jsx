@@ -21,7 +21,7 @@ const Checkout = ({ dishes, packs }) => {
   const [userInfo, setUserInfo] = useState({})
   useEffect(() => {
     //useEffect because localStorage is not defined at first because of next js
-    setUserInfo(JSON.stringify(localStorage.getItem("orderingReq") || {}))
+    setUserInfo(JSON.parse(localStorage.getItem("orderingReq")) || {})
   }, [])
 
   // here is a series of cartItems validation because nextjs doesn't support
@@ -89,8 +89,9 @@ const Checkout = ({ dishes, packs }) => {
     0
   )
 
-  const handleChange = (e, field) =>
+  const handleChange = (e, field) => {
     setUserInfo((prev) => ({ ...prev, [field]: e.target.value }))
+  }
 
   const [showErrMsg, setShowErrMsg] = useState(false)
   const [loading, setLoading] = useState(false)
