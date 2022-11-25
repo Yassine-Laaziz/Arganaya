@@ -10,14 +10,6 @@ import transpileValue from "../lib/utils/transpileValue"
 import toast from "react-hot-toast"
 
 const Checkout = ({ dishes, packs }) => {
-  const router = useRouter()
-  useEffect(() => {
-    axios
-      .get("/api/checkAuthorized")
-      .then((res) => !res.data.verified && router.push("/Verify"))
-      .catch(() => router.push("/Verify"))
-  }, [])
-
   const [userInfo, setUserInfo] = useState({})
   useEffect(() => {
     //useEffect because localStorage is not defined at first because of next js

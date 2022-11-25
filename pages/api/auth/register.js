@@ -1,9 +1,9 @@
-import { connect } from "../../lib/mongodb"
-import UserModel from "../../models/Users"
-import EmailTokenModel from "../../models/Token"
+import { connect } from "../../../lib/mongodb"
+import UserModel from "../../../models/Users"
+import EmailTokenModel from "../../../models/Token"
 import bcrypt from "bcrypt"
 import validator from "validator"
-import createToken from "../../lib/createToken"
+import { createToken } from "../../../lib/jwt"
 import crypto from "crypto"
 import axios from "axios"
 
@@ -11,28 +11,17 @@ const handler = async (req, res) => {
   try {
     connect()
     //for more security
-    const user = {
-      fullName: req.body.fullName,
-      number: req.body.number,
-      email: req.body.email,
-      password: req.body.password,
-      confirmPassword: req.body.confirmPassword,
-    }
+    const { fullName, number, email, password, confirmPassword } = req.body
+    const user = { fullName, number, email, password, confirmPassword }
     // validation
-    // 1 all fields required ?
-    if (
-      !user.fullName ||
-      !user.number ||
-      !user.email ||
-      !user.password ||
-      !user.confirmPassword
-    )
+    // 1 all fields required
+    if (!fullName || !number || !email || !password || !confirmPassword)
       return res.status(422).send("All fields must be filled")
 
     // 2 is true email ?
-    const email = user.email.toLowerCase()
-    // email to lower case, incase a user forgets the lower and upper cases
-    user.email = email
+    const lowerEmail = user.email.toLowerCase()
+    // email to lower case, incase a user forgets the lower and upper characters
+    user.email = lowerEmail
     if (!validator.isEmail(email))
       return res.status(422).send("email is not valid!")
 
@@ -42,7 +31,7 @@ const handler = async (req, res) => {
     if (exists && exists.verified)
       return res.status(422).send("Account Already Registered!")
 
-    // 4 password & confirm password the same?
+    // 4 password & confirm password the same ?
     if (user.password !== user.confirmPassword) {
       return res
         .status(422)
@@ -66,7 +55,7 @@ const handler = async (req, res) => {
     const User = await UserModel.create(user)
 
     // jwt Token
-    const { jwtToken, serialized } = createToken(User._id)
+    const { jwtToken, serialized } = await createToken({ id: User._id })
 
     res.setHeader("Set-Cookie", serialized)
     res.status(200).send(jwtToken)
@@ -78,7 +67,7 @@ const handler = async (req, res) => {
     })
 
     axios.post(
-      `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
+      `${process.env.BASE_URL}/api/auth/verification/sendVerificationEmail`,
       { emailToken }
     )
   } catch (error) {

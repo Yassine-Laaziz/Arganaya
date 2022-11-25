@@ -1,9 +1,9 @@
-import jwt from "jsonwebtoken"
-import EmailTokenModel from "../../../models/Token"
-import UserModel from "../../../models/Users"
+import EmailTokenModel from "../../../../models/Token"
+import UserModel from "../../../../models/Users"
 import axios from "axios"
 import crypto from "crypto"
 import cookie from "cookie"
+import { verify } from "../../../../lib/jwt"
 
 const resend = async (req, res) => {
   try {
@@ -12,7 +12,8 @@ const resend = async (req, res) => {
       return res
         .status(400)
         .json({ info: { message: "something went wrong!", status: "Error" } })
-    const { _id } = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY)
+    const { payload } = await verify(jwtToken, process.env.JWT_SECRET_KEY)
+    const { _id } = payload
 
     const user = await UserModel.findById(_id)
     if (!user)
@@ -35,7 +36,7 @@ const resend = async (req, res) => {
       })
 
     await axios.post(
-      `${process.env.BASE_URL}/api/verification/sendVerificationEmail`,
+      `${process.env.BASE_URL}/api/auth/verification/sendVerificationEmail`,
       { emailToken }
     )
     res

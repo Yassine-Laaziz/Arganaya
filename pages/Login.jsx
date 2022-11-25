@@ -27,18 +27,17 @@ const Login = () => {
     e.preventDefault()
     setIsLoading(true)
     axios
-      .post(`/api/login`, data)
+      .post(`/api/auth/login`, data)
       .then(() => {
         setIsLoading(false)
         toast.success("Successfully Logged in!")
         router.reload()
-        router.push("/")
       })
       .catch((err) => {
         setIsLoading(false)
         const duration = err.response.data.split("").length * 70 + 1500
         toast.error(err.response.data, {
-          style: { textAlign: "center", color: "red" },
+          style: { color: "red" },
           duration: duration,
         })
       })
