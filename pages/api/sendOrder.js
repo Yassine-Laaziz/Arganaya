@@ -2,13 +2,13 @@ import nodemailer from "nodemailer"
 import { connect } from "../../lib/mongodb"
 import { parse } from "cookie"
 import UserModel from "../../models/Users"
-import { verify } from "jsonwebtoken"
+import { verify } from "../../lib/jwt"
 
 const sendOrder = async (req, res) => {
   try {
     connect()
     const { jwtToken } = parse(req.headers.cookie)
-    const { _id } = verify(jwtToken, process.env.JWT_SECRET_KEY)
+    const { _id } = await verify(jwtToken, process.env.JWT_SECRET_KEY)
     const user = await UserModel.findById(_id)
     if (!user || !user.verified) return res.status(400).end()
     const { fullName } = user
