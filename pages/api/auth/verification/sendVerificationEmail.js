@@ -82,7 +82,8 @@ const sendVerificationEmail = async (req, res) => {
       </main>
       `,
     })
-    res.status(200).send(process.env.BASE_URL)
+    
+    res.status(200).send('email sent successfully!')
   } catch (error) {
     res.status(400).send("we're unable to send email")
   }

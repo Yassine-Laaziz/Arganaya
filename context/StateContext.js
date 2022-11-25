@@ -152,12 +152,19 @@ export const StateContext = ({ children }) => {
     })
   }
 
+  const clearCart = () => {
+    setTotalPrice(0)
+    setTotalQuantities(0)
+    setCartItems([])
+  }
+
   return (
     <Context.Provider
       value={{
         showCart,
         setShowCart,
         cartItems,
+        clearCart,
         totalPrice,
         totalQuantities,
         qty,

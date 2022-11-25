@@ -9,7 +9,7 @@ const Dish = ({ dish }) => {
     <Link href={`/Dish/${slug.current}`}>
       <div className={styles.dishCard} tabIndex="0">
         <img
-          src={urlFor(images[0])}
+          src={images && urlFor(images[0])}
           alt="Arganaya"
           className={styles.dishImage}
           width="250px"

@@ -1,7 +1,7 @@
 import styles from "../../styles/Dish.module.css"
 import { urlFor, client } from "../../lib/client"
 import { Dish } from "../../components"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai"
 import { IoOptions } from "react-icons/io5"
 import { CgCloseR } from "react-icons/cg"
@@ -69,7 +69,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
         <div>
           <img
             alt={`Arganaya ${name}`}
-            src={urlFor(images && images[index])}
+            src={images && urlFor(images[index])}
             className={styles.dishDetailImage}
           />
           <div className={styles.smallImagesContainer}>
