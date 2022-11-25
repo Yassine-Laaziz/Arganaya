@@ -15,20 +15,9 @@ const Verify = () => {
   const [info, setInfo] = useState({})
 
   useEffect(() => {
-    axios
-      .get("/api/checkAuthorized")
-      .then((res) => {
-        if (!res.data.user) router.push("Login")
-        if (res.data.verified)
-          setInfo({ message: "You're already verified!", status: "Success" })
-      })
-      .catch((res) => !res.user && router.push("/Login"))
-  }, [])
-
-  useEffect(() => {
     if (emailToken) {
       axios
-        .post(`/api/verification/verify`, { emailToken })
+        .post(`/api/auth/verification/verify`, { emailToken })
         .then((res) => setInfo(res.data))
         .catch((err) => {
           setInfo(
@@ -61,7 +50,7 @@ const Verify = () => {
       if (remaining <= 0) {
         setRemaining(60)
         toast.loading("Sending..", { id: "loading" })
-        const response = await axios.get("/api/verification/resendVerificationEmail")
+        const response = await axios.get("/api/auth/verification/resendVerificationEmail")
         if (!response)
           return setInfo({
             message: "Something went wrong please retry or check again later",

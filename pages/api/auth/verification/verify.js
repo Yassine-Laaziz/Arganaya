@@ -1,6 +1,7 @@
-import EmailTokenModel from "../../../models/Token"
-import UserModel from "../../../models/Users"
-import { connect } from "../../../lib/mongodb"
+import EmailTokenModel from "../../../../models/Token"
+import UserModel from "../../../../models/Users"
+import { connect } from "../../../../lib/mongodb"
+import { createToken } from "../../../../lib/jwt"
 
 const verify = async (req, res) => {
   try {
@@ -11,7 +12,8 @@ const verify = async (req, res) => {
     if (!foundEmailToken) {
       // when we resend, we create another EmailTokenModel if the old one expired
       return res.status(200).json({
-        message: "Your Token expired, click 'Resend' for a new one and check you email",
+        message:
+          "Your Token expired, click 'Resend' for a new one and check you email",
         status: "Error",
       })
     }
@@ -28,6 +30,10 @@ const verify = async (req, res) => {
     )
     await UserModel.deleteMany({ email: user.email, verified: false })
     await EmailTokenModel.deleteMany({ userId: foundEmailToken.userId })
+
+    // updating token to include "verified: true", we'll use this in middleware
+    const { serialized } = await createToken({ id: user._id, verified: true })
+    res.setHeader("Set-Cookie", serialized)
 
     res
       .status(200)

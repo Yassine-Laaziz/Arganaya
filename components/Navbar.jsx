@@ -1,24 +1,29 @@
 import styles from "../styles/Components/Navbar.module.css"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
 import { AiOutlineShopping } from "react-icons/ai"
 import { CgProfile } from "react-icons/cg"
 import { useStateContext } from "../context/StateContext"
 import { Cart } from "./"
-import cookie from "cookie"
+import axios from "axios"
+import { useRouter } from "next/router"
 
 const Navbar = () => {
   const { showCart, setShowCart, totalQuantities } = useStateContext()
   const [display, setDisplay] = useState(false)
 
   const [token, setToken] = useState(null)
-  useEffect(() => setToken(cookie.parse(document.cookie).jwtToken), [])
+  useEffect(() => {
+    axios.post("/api/auth/profile", { objective: "check" }).then((res) => {
+      setToken(res.data.user || null)
+    })
+  }, [])
 
   const router = useRouter()
   const handleLogout = () => {
-    document.cookie = "jwtToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC;"
-    router.reload()
+    axios.post("/api/auth/profile", { objective: "logout" }).then(() => {
+      router.reload()
+    })
   }
 
   const handleClick = (e) => {
@@ -42,7 +47,10 @@ const Navbar = () => {
           <div className="modal" onClick={(e) => handleClick(e)}>
             <div className={styles.profileList}>
               {token ? (
-                <button onClick={() => handleLogout()}>Logout</button>
+                <>
+                  <button onClick={() => handleLogout()}>Logout</button>
+                  {!token.verified && <Link href={"/Verify"}>Verify</Link>}
+                </>
               ) : (
                 <>
                   <Link href={"/Signup"}>Sign Up!</Link>
