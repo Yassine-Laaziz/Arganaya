@@ -6,6 +6,7 @@ const profile = async (req, res) => {
   if (objective === "check") {
     try {
       const { jwtToken } = req.cookies
+      if (!jwtToken) return res.status(400).send('no token')
       const { payload } = await verify(jwtToken)
       let correct,
         verified = false

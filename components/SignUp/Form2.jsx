@@ -1,15 +1,7 @@
 const Form2 = (props) => {
-  const { dataChange, email, password, confirmPassword } = props
+  const { dataChange, password, confirmPassword } = props
   return (
     <>
-      <input
-        type="email"
-        placeholder="Email"
-        pattern="[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
-        onChange={(e) => dataChange("email", e)}
-        defaultValue={email}
-        required
-      />
       <input
         type="password"
         placeholder="Password"

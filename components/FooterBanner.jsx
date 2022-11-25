@@ -1,27 +1,21 @@
-
+import styles from "../styles/Components/FooterBanner.module.css"
 import Link from "next/link"
 import { urlFor } from "../lib/client"
 
 const FooterBanner = ({ footerBanner }) => {
-  const {
-    description,
-    largeText1,
-    smallText,
-    midText,
-    buttonText,
-    image,
-  } = footerBanner[0][0]
+  const { description, largeText1, smallText, midText, buttonText, image } =
+    footerBanner[0][0]
 
   const slug = footerBanner[1]
 
   return (
-    <div className="footer-banner-container">
-      <div className="banner-desc">
-        <div className="left">
+    <div className={styles.footerBannerContainer}>
+      <div className={styles.desc}>
+        <div className={styles.left}>
           <p>{description}</p>
           <h3>{largeText1}</h3>
         </div>
-        <div className="right">
+        <div className={styles.right}>
           <p>{smallText}</p>
           <h3>{midText}</h3>
           <Link href={`/Dish/${slug}`}>
@@ -31,7 +25,7 @@ const FooterBanner = ({ footerBanner }) => {
         <img
           src={urlFor(image)}
           alt="Arganaya"
-          className="footer-banner-image"
+          className={styles.footerBannerImage}
         />
       </div>
     </div>

@@ -38,17 +38,17 @@
   max-width: fit-content;
   margin-block: 20px 10px;
 }
-.option{
+.option {
   padding: 10px 20px;
   cursor: pointer;
   outline: 1px solid #f02d34;
   border-radius: 2px;
-  transition: all .1s;
+  transition: all 0.1s;
 }
-.option:hover{
+.option:hover {
   scale: 1.1;
 }
-.option[chosen]{
+.option[chosen] {
   background-color: #f02d34;
   color: white;
   outline: none;
@@ -114,11 +114,11 @@
   background-color: red;
 }
 
-.dishDetailDesc h3{
+.dishDetailDesc h3 {
   display: inline-block;
   margin-right: 20px;
 }
-.dishDetailDesc{
+.dishDetailDesc {
   margin-top: 0;
 }
 .dishDetailDesc .buttons {
@@ -197,4 +197,13 @@
   justify-content: center;
   gap: 15px;
   margin-top: 20px;
+}
+
+@media (max-width: 800px) {
+  .addToCart {
+    width: 150px;
+  }
+  .buttons .buyNow {
+    width: 150px;
+  }
 }

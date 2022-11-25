@@ -1,7 +1,7 @@
 .CreateUser {
   min-width: 100vw;
   min-height: 100vh;
-  background-image: linear-gradient(to bottom left, blue, crimson 70%);
+  background-image: linear-gradient(to bottom left, white, black 70%);
   position: relative;
 }
 
@@ -24,7 +24,7 @@
   margin-inline: auto;
   border-radius: 50px 0;
   padding: 25px;
-  background-color: hsla(0, 0%, 100%, 0.3);
+  background-color: hsla(0, 0%, 100%, 0.15);
 }
 .wrapper h1 {
   text-align: center;
@@ -49,12 +49,9 @@
   color: gray;
 }
 .wrapper input:focus-visible {
-  background-color: hsla(0, 0%, 100%, 0.3);
+  background-color: hsla(0, 0%, 100%, .9);
   outline: none;
   color: black;
-}
-.wrapper input:hover {
-  background-color: hsla(0, 0%, 100%, 0.1);
 }
 .wrapper ::placeholder {
   color: hsla(0, 0%, 10%, 0.8);

@@ -49,7 +49,6 @@ const Login = () => {
         <Link href="/Signup">Sign Up?</Link>
       </p>
       <form className={styles.wrapper} onSubmit={handleSubmit}>
-        <h1>Login</h1>
         <input
           placeholder="email"
           onChange={(e) => handleChange("email", e, setData)}

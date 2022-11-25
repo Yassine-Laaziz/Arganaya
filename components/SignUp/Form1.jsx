@@ -1,5 +1,5 @@
 const Form1 = (props) => {
-  const { dataChange, fullName, number } = props
+  const { dataChange, fullName, email } = props
   return (
     <>
       <input
@@ -10,12 +10,11 @@ const Form1 = (props) => {
         required
       />
       <input
-        type="number"
-        placeholder="Phone Number"
-        maxLength={20}
-        pattern="^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$"
-        onChange={(e) => dataChange("number", e)}
-        defaultValue={!number ? "" : number}
+        type="email"
+        placeholder="Email"
+        pattern="[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+        onChange={(e) => dataChange("email", e)}
+        defaultValue={email}
         required
       />
     </>

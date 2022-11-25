@@ -51,79 +51,77 @@ const Cart = () => {
         </button>
 
         {cartItems.length < 1 && (
-          <div className="empty-cart">
+          <div className={styles.emptyCart}>
             <AiOutlineShopping size={150} />
             <h3>Your Shopping Bag is Empty</h3>
             <Link href="/">
-              <button type="button" className="btn" onClick={() => closeCart()}>
+              <button
+                type="button"
+                className={styles.btn}
+                onClick={() => closeCart()}
+              >
                 Continue Shopping
               </button>
             </Link>
           </div>
         )}
 
-        <div className="dish-container">
+        <div className={styles.dishContainer}>
           {cartItems.length >= 1 &&
             cartItems.map((item, i) => (
               <div
-                className="dish"
+                className={styles.dish}
                 key={`cart${item._id}${JSON.stringify(item.params) + i}`}
               >
                 <img
                   src={urlFor(item.images[0])}
-                  className="cart-dish-image"
+                  className={styles.cartDishImage}
                   alt="Arganaya"
                 />
-                <div className="item-desc">
-                  <div className="flex top">
+                <div className={styles.itemDesc}>
+                  <div className={`${styles.flex} top`}>
                     <h5>{item.name}</h5>
                     <p>
-                      <span className="price">
-                        {item.price}dh
-                      </span>
+                      <span className="price">{item.price}dh</span>
                       {item.perPiece && (
                         <span className="per-piece">/for each piece </span>
                       )}
                     </p>
                   </div>
                   {/* Chosen Option */}
-                  {item.option && (
-                    <span className="option">{item.option}</span>
-                  )}
+                  {item.option && <span className="option">{item.option}</span>}
 
-                  <div className="flex">
-                    <div>
-                      <p className="quantity-desc">
-                        <span
-                          className="minus"
-                          tabIndex="0"
-                          onClick={() =>
-                            toggleCartItemQuantity({
-                              dish: item,
-                              value: -1,
-                            })
-                          }
-                        >
-                          <AiOutlineMinus />
-                        </span>
-                        <span className="num">{item.qty}</span>
-                        <span
-                          className="plus"
-                          tabIndex="0"
-                          onClick={() =>
-                            toggleCartItemQuantity({
-                              dish: item,
-                              value: 1,
-                            })
-                          }
-                        >
-                          <AiOutlinePlus />
-                        </span>
-                      </p>
-                    </div>
+                  <div className={styles.flex}>
+                    <p className="quantity-desc">
+                      <span
+                        className="minus"
+                        tabIndex="0"
+                        onClick={() =>
+                          toggleCartItemQuantity({
+                            dish: item,
+                            value: -1,
+                          })
+                        }
+                      >
+                        <AiOutlineMinus />
+                      </span>
+                      <span className="num">{item.qty}</span>
+                      <span
+                        className="plus"
+                        tabIndex="0"
+                        onClick={() =>
+                          toggleCartItemQuantity({
+                            dish: item,
+                            value: 1,
+                          })
+                        }
+                      >
+                        <AiOutlinePlus />
+                      </span>
+                    </p>
                     <button
                       type="btn"
-                      className="remove-item"
+                      className={styles.removeItem}
                       onClick={() =>
                         onRemove({
                           dish: item,
@@ -175,16 +173,16 @@ const Cart = () => {
             ))}
         </div>
         {cartItems.length >= 1 && (
-          <div className="cart-bottom">
-            <div className="total">
+          <div className={styles.cartBottom}>
+            <div className={styles.total}>
               <h3>Subtotal:</h3>
               <h3>{totalPrice}dh</h3>
             </div>
-            <div className="btn-container">
+            <div className={styles.btnContainer}>
               <Link href="/Checkout">
                 <button
                   type="button"
-                  className="btn"
+                  className={styles.btn}
                   onClick={() => closeCart()}
                 >
                   Checkout

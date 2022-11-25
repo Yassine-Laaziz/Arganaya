@@ -55,3 +55,112 @@
 .cartContainer details {
   margin-top: 20px;
 }
+.dishContainer {
+  margin-top: 15px;
+  overflow: auto;
+  max-height: 65vh;
+  padding: 20px 10px;
+}
+.dish {
+  padding: 20px 5px;
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+}
+.cartDishImage {
+  width: 180px;
+  height: 150px;
+  border-radius: 15px;
+  background-color: #ebebeb;
+}
+.cartBottom {
+  position: absolute;
+  bottom: 12px;
+  right: 5px;
+  width: 100%;
+  padding: 30px 65px;
+}
+.btnContainer {
+  width: 400px;
+  margin: auto;
+}
+.itemDesc .flex {
+  display: flex;
+  justify-content: space-between;
+  width: 350px;
+  color: #324d67;
+}
+.flex h5 {
+  font-size: 24px;
+}
+.flex h4 {
+  font-size: 20px;
+}
+.removeItem {
+  font-size: 24px;
+  color: #f02d34;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+.total {
+  display: flex;
+  justify-content: space-between;
+}
+.total h3 {
+  font-size: 22px;
+}
+.btn {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 12px;
+  border-radius: 15px;
+  border: none;
+  font-size: 20px;
+  margin-top: 10px;
+  margin-top: 40px;
+  text-transform: uppercase;
+  background-color: #f02d34;
+  color: #fff;
+  cursor: pointer;
+  transform: scale(1, 1);
+  transition: transform 0.5s ease;
+}
+.btn:hover {
+  scale: 1.1, 1.1;
+}
+
+@media (max-width: 800px) {
+  .dish-container {
+    margin-top: 10px;
+  }
+  .itemDesc .flex {
+    width: 200px;
+  }
+  .itemDesc .bottom {
+    margin-top: 30px;
+  }
+  .cartBottom {
+    padding: 30px;
+  }
+  .btnContainer {
+    width: 300px;
+    margin: auto;
+  }
+  .cartDishImage {
+    width: 25%;
+    height: 25%;
+  }
+  .flex h5 {
+    font-size: 16px;
+    color: #324d67;
+  }
+  .flex h4 {
+    font-size: 16px;
+    color: black;
+  }
+
+  .total h3 {
+    font-size: 20px;
+  }
+}

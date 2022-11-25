@@ -1,11 +1,12 @@
+import styles from "../styles/Components/Layout.module.css"
 import Head from "next/head"
 import Navbar from "./Navbar"
-import Footer from './Footer'
+import Footer from "./Footer"
 
-const Layout = ( {children} ) => {
+const Layout = ({ children }) => {
   return (
     <>
-      <div className="layout">
+      <div className={styles.layout}>
         <Head>
           <title>Arganaya</title>
         </Head>
@@ -13,9 +14,7 @@ const Layout = ( {children} ) => {
       <header>
         <Navbar />
       </header>
-      <main className="main-container">
-        {children}
-      </main>
+      <main className={styles.mainContainer}>{children}</main>
       <footer>
         <Footer />
       </footer>

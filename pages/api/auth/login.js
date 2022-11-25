@@ -15,19 +15,17 @@ const handler = async (req, res) => {
 
     // 2 Correct email?
     const user = await UserModel.findOne({ email, verified: true })
-    if (!user)
-      return res
-        .status(404)
-        .send(
-          "incorrect email or unverified account! (if the account is unverified create a new one!)"
-        )
+    if (!user) return res.status(404).send("account not registered")
 
     // 3 Correct password ?
     const match = await bcrypt.compare(password, user.password)
     if (!match) return res.status(422).send("Incorrect password!")
 
     // refreshing Token
-    const { jwtToken, serialized } = await createToken({ id: user._id, verified: user.verified })
+    const { jwtToken, serialized } = await createToken({
+      id: user._id,
+      verified: user.verified,
+    })
 
     res.setHeader("Set-Cookie", serialized)
     res.status(200).send(jwtToken)

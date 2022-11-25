@@ -12,7 +12,6 @@ const SignUp = () => {
   // initializing states, if user somehow skipped the form, mongodb won't save account
   const [data, setData] = useState({
     fullName: "",
-    number: 0,
     email: "",
     password: "",
     confirmPassword: "",
@@ -64,7 +63,6 @@ const SignUp = () => {
         <Link href="/Login">Login?</Link>
       </p>
       <form className={styles.wrapper} onSubmit={handleSubmit}>
-        <h1>SIGN UP</h1>
 
         {step}
 
