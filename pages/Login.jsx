@@ -32,7 +32,6 @@ const Login = () => {
         setIsLoading(false)
         toast.success("Successfully Logged in!")
         router.reload()
-        router.push("/")
       })
       .catch((err) => {
         setIsLoading(false)

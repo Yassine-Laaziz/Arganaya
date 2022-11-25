@@ -9,7 +9,7 @@ const middleware = async (req) => {
   let user = {}
   try {
     const { payload } = await verify(jwtToken)
-    if (payload) user.correct = true
+    if (payload?.id) user.correct = true
     if (payload?.verified) user.verified = true
   } catch (e) {
     user = { correct: false, verified: false }
@@ -22,8 +22,10 @@ const middleware = async (req) => {
   }
 
   if (href.includes("Login") || href.includes("Singup")) {
-    if (user.correct) return NextResponse.redirect(origin)
-    else return NextResponse.next()
+    if (user.correct && !user.verified)
+      return NextResponse.redirect(`${origin}/Verify`)
+    else if (user.verified) return NextResponse.redirect(origin)
+    return NextResponse.next()
   }
 
   if (href.includes("Verify")) {

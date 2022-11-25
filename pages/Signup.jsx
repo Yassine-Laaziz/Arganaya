@@ -46,7 +46,7 @@ const SignUp = () => {
           style: { textAlign: "center", color: "green" },
           duration: 10000,
         })
-        router.push("/Verify")
+        router.reload()
       })
       .catch((err) => {
         setIsLoading(false)
