@@ -12,8 +12,6 @@ const Dish = ({ dish }) => {
           src={images && urlFor(images[0])}
           alt="Arganaya"
           className={styles.dishImage}
-          width="250px"
-          height="250px"
         />
         <p className={styles.dishName}>{name}</p>
       </div>

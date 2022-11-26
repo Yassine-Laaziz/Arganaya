@@ -1,26 +1,36 @@
 .dishDetailContainer {
-  display: flex;
-  gap: 40px;
   margin: 40px;
   margin-top: 60px;
   color: #324d67;
+  display: grid;
+  grid-template-columns: 400px 1fr;
 }
 
 .dishDetailImage {
   border-radius: 15px;
   background-color: #ebebeb;
 
-  width: 400px;
+  width: 100%;
   height: 400px;
   cursor: pointer;
   transition: 0.3s ease-in-out;
+  margin-inline: auto;
 }
 .dishDetailImage:hover {
   background-color: #f02d34;
 }
 
+.dishDetailDesc {
+  margin-left: 20px;
+}
+.dishDetailDesc h3 {
+  display: inline-block;
+  margin-right: 20px;
+}
+
 .customize {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 20px;
   margin-top: 20px;
@@ -33,6 +43,7 @@
 }
 .options {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
   max-width: fit-content;
@@ -114,14 +125,7 @@
   background-color: red;
 }
 
-.dishDetailDesc h3 {
-  display: inline-block;
-  margin-right: 20px;
-}
-.dishDetailDesc {
-  margin-top: 0;
-}
-.dishDetailDesc .buttons {
+.buttons {
   display: flex;
   gap: 30px;
   margin-top: 15px;
@@ -141,7 +145,7 @@
 .addToCart:hover {
   transform: scale(1.1, 1.1);
 }
-.buttons .buyNow {
+.buyNow {
   width: 200px;
 
   padding: 10px 20px;
@@ -154,12 +158,14 @@
   transform: scale(1, 1);
   transition: transform 0.5s ease;
 }
-.buttons .buyNow:hover {
+.buyNow:hover {
   transform: scale(1.1, 1.1);
 }
 
 .smallImagesContainer {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
   margin-top: 20px;
 }
@@ -199,11 +205,65 @@
   margin-top: 20px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .addToCart {
     width: 150px;
   }
-  .buttons .buyNow {
+  .buyNow {
     width: 150px;
+  }
+  .dishDetailContainer{
+    grid-template-columns: 250px 1fr;
+  }
+  .dishDetailImage {
+    height:250px;
+    margin-top: 20px;
+  }
+}
+@media (max-width: 650px) {
+  .dishDetailContainer {
+    grid-template-columns: unset;
+  }
+  .dishDetailImage {
+    height: auto
+  }
+  .dishDetailDesc {
+    margin-left: 0;
+    margin-top: 20px;
+  }
+  .dishDetailImage {
+    margin-top: 0;
+  }
+}
+@media (max-width: 400px) {
+  .dishDetailContainer {
+    margin: 10px
+  }
+  .dishDetailContainer p,
+  .dishDetailContainer h1{
+    text-align: center;
+  }
+  .buttons {
+    flex-wrap: wrap;
+    margin-top: 60px;
+    justify-content: center;
+  }
+  .dishDetailImage {
+    width: 100%;
+    height: 200px
+  }
+  .maylikeDishesWrapper h2 {
+    margin: 5px;
+  }
+  .addToCart,
+  .buyNow {
+    width: 90%;
+  }
+  .quantityDesc {
+    display: flex;
+    justify-content: space-between;
+  }
+  .quantityDesc > * {
+    flex: 1;
   }
 }

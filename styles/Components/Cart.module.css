@@ -6,11 +6,6 @@
   padding: 40px 10px;
   position: relative;
 }
-@media (max-width: 700px) {
-  .cartContainer {
-    width: 100%;
-  }
-}
 @keyframes toLeft {
   from {
     translate: 100%;
@@ -58,12 +53,13 @@
 .dishContainer {
   margin-top: 15px;
   overflow: auto;
-  max-height: 65vh;
+  max-height: 55vh;
   padding: 20px 10px;
 }
 .dish {
   padding: 20px 5px;
   display: flex;
+  flex-wrap: wrap;
   gap: 30px;
   padding: 20px;
 }
@@ -131,6 +127,9 @@
 }
 
 @media (max-width: 800px) {
+  .cartContainer {
+    width: 100%;
+  }
   .dish-container {
     margin-top: 10px;
   }
@@ -147,10 +146,6 @@
     width: 300px;
     margin: auto;
   }
-  .cartDishImage {
-    width: 25%;
-    height: 25%;
-  }
   .flex h5 {
     font-size: 16px;
     color: #324d67;
@@ -163,4 +158,8 @@
   .total h3 {
     font-size: 20px;
   }
+}
+
+@media (max-width: 475px) {
+  
 }

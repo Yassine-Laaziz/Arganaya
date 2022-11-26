@@ -1,6 +1,6 @@
 .CreateUser {
   min-width: 100vw;
-  min-height: 100vh;
+  min-height: calc(100vh - 65px); /*65px for navbar*/
   background-image: linear-gradient(to bottom left, white, black 70%);
   position: relative;
 }
@@ -16,8 +16,8 @@
 }
 
 .wrapper {
-  min-width: 50%;
-  max-width: fit-content;
+  width: 50%;
+  max-width: 500px;
   position: relative;
   top: 40vh;
   translate: 0 -50%;
@@ -25,17 +25,18 @@
   border-radius: 50px 0;
   padding: 25px;
   background-color: hsla(0, 0%, 100%, 0.15);
+  border: 2px solid;
 }
 .wrapper h1 {
   text-align: center;
   font-family: "Gill Sans", "Gill Sans MT", "Trebuchet MS", sans-serif;
 }
 .step1,
-.step2{
-  width:100%;
+.step2 {
+  width: 100%;
   height: 100%;
 }
-.step2{
+.step2 {
   display: none;
 }
 .wrapper input {
@@ -49,7 +50,7 @@
   color: gray;
 }
 .wrapper input:focus-visible {
-  background-color: hsla(0, 0%, 100%, .9);
+  background-color: hsla(0, 0%, 100%, 0.9);
   outline: none;
   color: black;
 }
@@ -57,15 +58,15 @@
   color: hsla(0, 0%, 10%, 0.8);
   font-weight: 700;
 }
-.wrapper .buttons{
-  display:flex;
-  width:100%;
+.wrapper .buttons {
+  display: flex;
+  width: 100%;
   gap: 20px;
 }
 .wrapper button {
   flex: 1;
   font-size: 1.5em;
-  padding-block: 10px;
+  padding: 10px 4px;
   display: block;
   margin-inline: auto;
   cursor: pointer;
@@ -75,7 +76,7 @@
   background-color: hsla(0, 0%, 100%, 0.8);
 }
 .loginBtn {
-  width: 65%
+  width: 65%;
 }
 .wrapper button:hover {
   scale: 1.1;
@@ -87,19 +88,17 @@
   scale: 0.9;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .wrapper {
-    padding-inline: 0;
-  }
-  .wrapper input {
-    width: 80vw;
-    padding: 0;
-    padding-block: 10px;
-    padding-left: 4px;
+    min-width: 80%;
+    padding: 15px;
+    border-radius: 35px 0;
   }
 }
-@media (max-width: 500px) {
-  .wrapper input {
-    width: 100vw;
+@media (max-width: 260px) {
+  .wrapper {
+    min-width: 95%;
+    padding: 10px 5px;
+    border-radius: 25px 0;
   }
 }

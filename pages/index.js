@@ -5,20 +5,19 @@ import { useEffect, useState } from "react"
 
 const Home = ({ dishes, packs, bannerData }) => {
   bannerData = [bannerData, dishes[0].slug.current]
-  
+
   const [enoughWidth, setEnoughWidth] = useState(null)
   useEffect(() => {
     setEnoughWidth(window.innerWidth >= packs?.length * 470)
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       setEnoughWidth(window.innerWidth >= packs?.length * 470)
     })
   }, [])
 
-
   return (
     <>
       <HeroBanner heroBanner={bannerData && bannerData} />
-      {packs && (
+      {packs?.length >= 1 && (
         <>
           <div className={styles.packsHeading}>
             <h2>Special offer{packs.length > 1 ? "s" : ""}!</h2>
@@ -42,14 +41,18 @@ const Home = ({ dishes, packs, bannerData }) => {
           </div>
         </>
       )}
-      <div className={styles.dishesHeading}>
-        <h2>Recommended</h2>
-      </div>
-      <div className={styles.dishesContainer}>
-        {dishes?.map((dish) => (
-          <Dish key={dish._id} dish={dish} />
-        ))}
-      </div>
+      {dishes?.length >= 1 && (
+        <>
+          <div className={styles.dishesHeading}>
+            <h2>Recommended</h2>
+          </div>
+          <div className={styles.dishesContainer}>
+            {dishes?.map((dish) => (
+              <Dish key={dish._id} dish={dish} />
+            ))}
+          </div>
+        </>
+      )}
       <FooterBanner footerBanner={bannerData && bannerData} />
     </>
   )

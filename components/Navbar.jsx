@@ -48,8 +48,8 @@ const Navbar = () => {
             <div className={styles.profileList}>
               {token ? (
                 <>
-                  <button onClick={() => handleLogout()}>Logout</button>
                   {!token.verified && <Link href={"/Verify"}>Verify</Link>}
+                  <button onClick={() => handleLogout()}>Logout</button>
                 </>
               ) : (
                 <>
