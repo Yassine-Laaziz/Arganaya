@@ -11,7 +11,7 @@ import Form2 from "../components/SignUp/Form2"
 const SignUp = () => {
   // initializing states, if user somehow skipped the form, mongodb won't save account
   const [data, setData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",

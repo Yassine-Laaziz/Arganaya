@@ -38,6 +38,7 @@
   font-weight: 600;
   transition: 120ms;
   background-color: hsla(0, 0%, 95%);
+  border: none;
 }
 .profileList > *:hover {
   scale: 1.2;

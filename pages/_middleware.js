@@ -6,31 +6,30 @@ const middleware = async (req) => {
   const { jwtToken } = cookies
   const { href, origin } = req.nextUrl.clone()
 
-  let user = {}
+  let signedUp, verified
   try {
     const { payload } = await verify(jwtToken)
-    if (payload?.id) user.correct = true
-    if (payload?.verified) user.verified = true
+    signedUp = payload.signedUp
+    verified = payload.verified
   } catch (e) {
-    user = { correct: false, verified: false }
+    signedUp, verified = false
   }
 
   if (href.includes("Checkout")) {
-    if (!user.correct) return NextResponse.redirect(`${origin}/Login`)
-    if (!user.verified) return NextResponse.redirect(`${origin}/Verify`)
+    if (!signedUp) return NextResponse.redirect(`${origin}/Login`)
+    else if (!verified) return NextResponse.redirect(`${origin}/Verify`)
     return NextResponse.next()
   }
 
-  if (href.includes("Login") || href.includes("Singup")) {
-    if (user.correct && !user.verified)
-      return NextResponse.redirect(`${origin}/Verify`)
-    else if (user.verified) return NextResponse.redirect(origin)
+  if (href.includes("Login") || href.includes("Signup")) {
+    if (signedUp && !verified) return NextResponse.redirect(`${origin}/Verify`)
+    else if (verified) return NextResponse.redirect(origin)
     return NextResponse.next()
   }
 
   if (href.includes("Verify")) {
-    if (!user.correct) return NextResponse.redirect(`${origin}/Login`)
-    if (user.verified) return NextResponse.redirect(origin)
+    if (!signedUp) return NextResponse.redirect(`${origin}/Login`)
+    if (verified) return NextResponse.redirect(origin)
     return NextResponse.next()
   }
 }

@@ -18,10 +18,17 @@ const Verify = () => {
     if (emailToken) {
       axios
         .post(`/api/auth/verification/verify`, { emailToken })
-        .then((res) => setInfo(res.data))
+        .then((res) => {
+          setInfo(
+            res.data.message || {
+              message: "Something went wrong please check the url",
+              status: "Error",
+            }
+          )
+        })
         .catch((err) => {
           setInfo(
-            err.response.data || {
+            err.response.data.message || {
               message: "Something went wrong please check the url",
               status: "Error",
             }
@@ -30,7 +37,7 @@ const Verify = () => {
     } else {
       setInfo({
         message: "Please Check your email address for the verification link",
-        status: "Pending..",
+        status: "Pending",
       })
     }
   }, [emailToken]) // the query property doesn't load on first render
@@ -47,34 +54,32 @@ const Verify = () => {
 
   const resend = async () => {
     try {
-      if (remaining <= 0) {
+      if (remaining <= 60) {
         setRemaining(60)
         toast.loading("Sending..", { id: "loading" })
-        const response = await axios.get("/api/auth/verification/resendVerificationEmail")
+
+        const response = await axios.get(
+          "/api/auth/verification/sendVerificationEmail"
+        )
         if (!response)
           return setInfo({
             message: "Something went wrong please retry or check again later",
             status: "Error",
           })
 
-        setInfo(
-          response.data.info || {
-            message: "Something went wrong please retry or check again later",
-            Status: "Error",
-          }
-        )
         toast.dismiss("loading")
-        toast.success(
-          response.data.info.message ||
-            "Something went wrong, retry or contact us",
-          {
-            style: { textAlign: "center" },
-          }
-        )
+        toast.success("An email was sent", {
+          style: { textAlign: "center" },
+        })
+        setInfo({
+          message: "A new email was sent to you",
+          Status: "Pending",
+        })
       } else {
         toast.error(`Too many requests! wait for ${remaining} seconds `)
       }
     } catch (e) {
+      toast.dismiss("loading")
       setInfo({
         message: "Something went wrong please retry or check again later",
         Status: "Error",
@@ -106,7 +111,7 @@ const Verify = () => {
         )}
         <p className={styles.status}>{info.status}</p>
         {/* if it's not pending */}
-        {info.status !== "Pending.." && (
+        {info.status !== "Pending" && (
           <p className={styles.message}>{info.message}</p>
         )}
         {/* if is not success*/}

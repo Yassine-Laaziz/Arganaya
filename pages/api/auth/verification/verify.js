@@ -1,38 +1,32 @@
-import EmailTokenModel from "../../../../models/Token"
 import UserModel from "../../../../models/Users"
 import { connect } from "../../../../lib/mongodb"
-import { createToken } from "../../../../lib/jwt"
+import { createToken, verify } from "../../../../lib/jwt"
 
-const verify = async (req, res) => {
+const verificationPage = async (req, res) => {
   try {
     connect()
     const { emailToken } = req.body
+    const { payload } = await verify(req.cookies.jwtToken)
+    const { user, verified } = payload
 
-    const foundEmailToken = await EmailTokenModel.findOne({ token: emailToken })
-    if (!foundEmailToken) {
-      // when we resend, we create another EmailTokenModel if the old one expired
-      return res.status(200).json({
+    if (!user || !emailToken) {
+      return res.status(400).json({
         message:
-          "Your Token expired, click 'Resend' for a new one and check you email",
+          "Something went wrong, please do not modify the link, in case you don't have one click 'Resend' and check you email",
         status: "Error",
       })
     }
 
-    const user = await UserModel.findById(foundEmailToken.userId)
-    if (user.verified)
+    const alreadyExists = await UserModel.findOne({ email: user.email })
+    if (alreadyExists || verified)
       return res
         .status(200)
         .json({ message: "You're already verified!", status: "Success" })
 
-    await UserModel.updateOne(
-      { _id: foundEmailToken.userId },
-      { verified: true }
-    )
-    await UserModel.deleteMany({ email: user.email, verified: false })
-    await EmailTokenModel.deleteMany({ userId: foundEmailToken.userId })
+    await UserModel.create(user)
 
     // updating token to include "verified: true", we'll use this in middleware
-    const { serialized } = await createToken({ id: user._id, verified: true })
+    const { serialized } = await createToken({ user: true, verified: true })
     res.setHeader("Set-Cookie", serialized)
 
     res
@@ -49,4 +43,4 @@ const verify = async (req, res) => {
   }
 }
 
-export default verify
+export default verificationPage
