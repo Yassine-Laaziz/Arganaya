@@ -11,7 +11,7 @@ const sendOrder = async (req, res) => {
     const { payload } = await verify(jwtToken, process.env.JWT_SECRET_KEY)
     const user = await UserModel.findById(payload.id)
     if (!user || !user.verified) return res.status(400).end()
-    const { fullName } = user
+    const { name } = user
 
     const { cleanedCart, userInfo } = req.body
     const totalPrice = cleanedCart.reduce(
@@ -36,7 +36,7 @@ const sendOrder = async (req, res) => {
       subject: "order",
       html: `
         <h2>User info</h2>
-        <p>fullName: ${fullName}</p>
+        <p>name: ${name}</p>
         <p>address line 1: ${userInfo.addressLine1}</p>
         <p>address line 2: ${userInfo.addressLine2}</p>
         <p>Phone number: ${userInfo.phoneNumber}</p>

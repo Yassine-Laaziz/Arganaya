@@ -16,7 +16,7 @@ const Form2 = (props) => {
       </div>
       <input
         type={showPass ? "text" : "password"}
-        placeholder="Password"
+        placeholder="Create a password"
         onChange={(e) => dataChange("password", e)}
         defaultValue={password}
         required
