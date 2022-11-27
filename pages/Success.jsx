@@ -14,7 +14,7 @@ const Success = () => {
         <br />
         Please contact us if you have any questions at
         <br />
-        "ArganayaYummy@gmail.com"
+        &quot;ArganayaYummy@gmail.com&quot;
       </p>
 
       <Link href="/">Continue</Link>
