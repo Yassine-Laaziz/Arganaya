@@ -14,7 +14,7 @@ const PackDetails = ({ pack, otherPacks }) => {
   return (
     <div>
       <div className={styles.dishDetailContainer}>
-        <div>
+        <div className={styles.imagesSection}>
           <img
             alt={`Arganaya ${name}`}
             src={urlFor(images && images[index])}

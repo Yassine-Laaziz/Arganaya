@@ -66,7 +66,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
   return (
     <div>
       <div className={styles.dishDetailContainer}>
-        <div>
+        <div className={styles.imagesSection}>
           <img
             alt={`Arganaya ${name}`}
             src={images && urlFor(images[index])}

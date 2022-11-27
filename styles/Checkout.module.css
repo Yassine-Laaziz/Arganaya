@@ -31,44 +31,45 @@
 }
 .dishRow {
   width: 80%;
+  min-height: 180px;
   margin-inline: auto;
   display: flex;
+  flex-wrap: wrap;
   overflow: hidden;
   position: relative;
 }
 .dishRow img {
-  width: 30%;
+  max-width: 40%;
   max-height: 200px;
+  aspect-ratio: 1;
   border-bottom-left-radius: 60px;
 }
 .info {
   flex: 1;
   padding: 10px;
   font-weight: 600;
-  border-bottom: 1px solid hsla(0, 0%, 0%, 0.2);
-  border-left: 1px solid hsla(0, 0%, 0%, 0.2);
-  border-right: 1px solid hsla(0, 0%, 0%, 0.2);
+  border: 1px solid hsla(0, 0%, 0%, 0.2);
+  border-top: none;
   position: relative;
-}
-.info .options {
-  padding: 20px;
 }
 .equations {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
   gap: 20px;
-  justify-content: space-between;
   padding-inline: 10px;
   border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
   white-space: nowrap;
 }
-.description {
-  margin-top: 30px;
-}
+
 .option {
   margin-top: 10px;
   width: fit-content;
 }
-
+.description {
+  margin-block: 15px;
+}
 .Checkout h2 {
   padding-block: 10px;
 }
@@ -103,10 +104,10 @@
   background-color: hsla(180, 100%, 50%, 0.2);
   border: 2px solid cyan;
   border-radius: 10px;
-  transition: .2s;
+  transition: 0.2s;
 }
 .Checkout form button:hover {
-  scale:1.1
+  scale: 1.1;
 }
 
 .Checkout form .errorMsg {
@@ -115,6 +116,31 @@
   font-weight: 600;
   padding: 20px 5px;
   background-color: hsla(0, 100%, 60%);
-  box-shadow: 0 0 2px 2px inset hsla(10, 100%, 80%,);
+  box-shadow: 0 0 2px 2px inset hsla(10, 100%, 80%);
   border-radius: 4px;
+}
+
+@media (max-width: 650px) {
+  .dishRow img {
+    object-fit: cover;
+    max-width: unset;
+    width: 100%;
+    max-height: 200px;
+    border-radius: unset;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  .dishRow .description {
+    text-align: center;
+  }
+  .Checkout form {
+    width: 80%;
+  }
+  .option {
+    margin: 15px auto 0 auto;
+  }
+  .info,
+  .Checkout form button {
+    padding: 5px;
+  }
 }

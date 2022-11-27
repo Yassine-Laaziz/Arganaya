@@ -1,6 +1,6 @@
 import styles from "../styles/Checkout.module.css"
 import { useStateContext } from "../context/StateContext"
-import { BsCartXFill, BsTruckFlatbed } from "react-icons/bs"
+import { BsCartXFill } from "react-icons/bs"
 import Link from "next/link"
 import axios from "axios"
 import { useRouter } from "next/router"
@@ -96,7 +96,7 @@ const Checkout = ({ dishes, packs }) => {
       .then(() => {
         clearCart()
         localStorage.setItem("orderingReq", JSON.stringify(userInfo))
-        // redirect
+        router.push('/Success')
       })
       .catch(() => setShowErrMsg(true))
       .finally(() => {
@@ -105,6 +105,7 @@ const Checkout = ({ dishes, packs }) => {
       })
   }
 
+  const router = useRouter()
   const fixProblem = () => {
     setLoading(true)
     toast.loading("fixing...", { id: "fixing" })
@@ -147,53 +148,40 @@ const Checkout = ({ dishes, packs }) => {
                     <span>
                       {item.qty} {item.name}
                     </span>
-                    <span>
-                      {item.qty} * {item.price}dh ={" "}
+                    <span style={{ whiteSpace: "pre-wrap" }}>
+                      {item.qty} * {item.price}dh =
                       <span className="price">{item.qty * item.price}dh</span>
                     </span>
                   </div>
-                  <p className={styles.description}>{item.description}</p>
                   {/* Chosen Option */}
                   {item.option && (
                     <div className={`option ${styles.option}`}>
                       {item.option}
                     </div>
                   )}
+                  <p className={styles.description}>{item.description}</p>
                   {/* Params */}
                   {item.params && JSON.stringify(item.params) !== "{}" && (
                     <details className="paramsContainer">
-                      <summary className="paramsIcon">
-                        <span>...</span>
-                      </summary>
-                      <div className={`params ${styles.options}`}>
-                        {Object.entries(item.params).map((option, i) => (
-                          <div
-                            className="param"
-                            key={`${
-                              item.name + JSON.stringify(item.params) + i
-                            }CheckoutOption`}
-                            style={{
-                              border: `5px solid ${transpileValue(
-                                option[1],
-                                "toColor"
-                              )}`,
-                            }}
-                          >
-                            <p
+                      <summary> parameters </summary>
+                      {Object.entries(item.params).map((option, i) => (
+                        <div
+                          key={`${
+                            item.name + JSON.stringify(item.params) + i
+                          }CheckoutOption`}
+                        >
+                          <p>
+                            <span
                               style={{
-                                backgroundColor: transpileValue(
-                                  option[1],
-                                  "toColor"
-                                ),
+                                color: transpileValue(option[1], "toColor"),
                               }}
-                              className="optionHead"
                             >
                               {option[1]}
-                            </p>
-                            <p className={styles.optionBottom}>{option[0]}</p>
-                          </div>
-                        ))}
-                      </div>
+                            </span>
+                            <span> {option[0]}</span>
+                          </p>
+                        </div>
+                      ))}
                     </details>
                   )}
                 </div>
@@ -218,7 +206,7 @@ const Checkout = ({ dishes, packs }) => {
               required
             />
             <input
-              placeholder="You phone number (in order to contact you)"
+              placeholder="You phone number"
               type="number"
               value={userInfo.phoneNumber}
               onChange={(e) => handleChange(e, "phoneNumber")}

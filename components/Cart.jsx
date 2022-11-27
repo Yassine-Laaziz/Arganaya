@@ -92,7 +92,7 @@ const Cart = () => {
                   {item.option && <span className="option">{item.option}</span>}
 
                   <div className={styles.flex}>
-                    <p className="quantity-desc">
+                    <p className={`quantity-desc ${styles.quantityDesc}`}>
                       <span
                         className="minus"
                         tabIndex="0"
@@ -133,39 +133,30 @@ const Cart = () => {
                   </div>
                   {/* Parameters */}
                   {item.params && JSON.stringify(item.params) !== "{}" && (
-                    <details className="paramsContainer">
+                    <details>
                       <summary className="paramsIcon">
                         <span>...</span>
                       </summary>
-                      <div className="params">
-                        {Object.entries(item.params).map((option, i) => (
-                          <div
-                            className="param"
-                            key={`${
-                              item.name + JSON.stringify(item.params) + i
-                            }cartOption`}
+                      {Object.entries(item.params).map((param, i) => (
+                        <p
+                          key={`${
+                            item.name + JSON.stringify(item.params) + i
+                          }cartParams`}
+                        >
+                          <span
                             style={{
-                              border: `5px solid ${transpileValue(
-                                option[1],
+                              color: transpileValue(
+                                param[1],
                                 "toColor"
-                              )}`,
+                              ),
                             }}
+                            className="paramHead"
                           >
-                            <p
-                              style={{
-                                backgroundColor: transpileValue(
-                                  option[1],
-                                  "toColor"
-                                ),
-                              }}
-                              className="paramHead"
-                            >
-                              {option[1]}
-                            </p>
-                            <p className={styles.optionBottom}>{option[0]}</p>
-                          </div>
-                        ))}
-                      </div>
+                            {param[1]}
+                          </span>
+                          <span> {param[0]}</span>
+                        </p>
+                      ))}
                     </details>
                   )}
                 </div>

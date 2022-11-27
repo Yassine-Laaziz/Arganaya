@@ -22,6 +22,7 @@
 
 .cartHeading {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   font-size: 18px;
   font-weight: 500;
@@ -34,10 +35,12 @@
 
 .cartHeading .heading {
   margin-left: 10px;
+  white-space: nowrap;
 }
 .cartNumItems {
   margin-left: 10px;
   color: #f02d34;
+  white-space: nowrap;
 }
 .emptyCart {
   margin: 40px;
@@ -53,13 +56,14 @@
 .dishContainer {
   margin-top: 15px;
   overflow: auto;
-  max-height: 55vh;
+  max-height: 52vh;
   padding: 20px 10px;
 }
 .dish {
   padding: 20px 5px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 30px;
   padding: 20px;
 }
@@ -80,14 +84,18 @@
   width: 400px;
   margin: auto;
 }
+.itemDesc {
+  flex: 1;
+  min-width: fit-content;
+}
 .itemDesc .flex {
   display: flex;
   justify-content: space-between;
-  width: 350px;
   color: #324d67;
 }
 .flex h5 {
   font-size: 24px;
+  white-space: nowrap;
 }
 .flex h4 {
   font-size: 20px;
@@ -133,9 +141,6 @@
   .dish-container {
     margin-top: 10px;
   }
-  .itemDesc .flex {
-    width: 200px;
-  }
   .itemDesc .bottom {
     margin-top: 30px;
   }
@@ -160,6 +165,29 @@
   }
 }
 
-@media (max-width: 475px) {
-  
+@media (max-width: 550px) {
+  .itemDesc {
+    min-width: 100%;
+  }
+  .btnContainer {
+    width: 80%;
+    min-width: fit-content;
+  }
+}
+@media (max-width: 350px) {
+  .itemDesc {
+    text-align: center;
+  }
+  .flex {
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  .quantityDesc {
+    display: flex;
+    min-width: fit-content;
+    margin-bottom: 5px;
+  }
+  .quantityDesc > * {
+    flex: 1;
+  }
 }

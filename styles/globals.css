@@ -62,15 +62,6 @@ a {
   }
 }
 
-.option {
-  background-color: #f02d34;
-  color: white;
-  font-size: 20px;
-  font-weight: 500;
-  border-radius: 5px;
-  padding: 2px 10px;
-}
-
 .paramsIcon {
   font-size: 30px;
   background-color: #f02d34;
@@ -95,29 +86,12 @@ a {
   font-size: 40px;
   user-select: none;
 }
-.paramsContainer {
-  margin-top: 10px;
-}
-.params {
-  max-width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.param {
-  border-radius: 10px;
-  width: fit-content;
-  display: inline-block;
-  font-size: 20px;
-  font-weight: 700;
-  text-align: center;
-  text-transform: uppercase;
-}
-.paramHead {
+.option {
+  padding: 3px 10px;
   color: white;
-  position: relative;
-  top: -2px;
+  font-weight: 500;
+  background-color: #f02d34;
+  border-radius: 8px;
 }
 
 .quantity-desc {

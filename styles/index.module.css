@@ -4,8 +4,7 @@
   margin: 40px 0px;
   color: #324d67;
 }
-.packsHeading,
-.dishesHeading h2 {
+.packsHeading {
   font-size: 40px;
   font-weight: 800;
 }
@@ -30,8 +29,7 @@
 }
 
 @media (max-width: 300px) {
-  .packsHeading,
-  .dishesHeading h2 {
+  .packsHeading {
     font-size: 20px;
   }
 }

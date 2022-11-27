@@ -43,9 +43,6 @@ const Home = ({ dishes, packs, bannerData }) => {
       )}
       {dishes?.length >= 1 && (
         <>
-          <div className={styles.dishesHeading}>
-            <h2>Recommended</h2>
-          </div>
           <div className={styles.dishesContainer}>
             {dishes?.map((dish) => (
               <Dish key={dish._id} dish={dish} />

@@ -1,0 +1,48 @@
+.container {
+    width: 500px;
+    margin-inline: auto;
+    margin-top: 100px;
+    padding:40px;
+    background-color: hsl(0, 0%, 88%);
+    border-radius: 10px;
+    color: hsl(190, 50%, 20%);
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.5em;
+}
+
+.container a {
+    display: block;
+    margin-top: 40px;
+    padding-block: 20px;
+    background-color: hsla(0, 0%, 5%);
+    color:white;
+    box-shadow: 0 0 10px 1px cyan;
+    border-radius: 10px;
+    transition: .2s ;
+}
+.container a:hover {
+    scale: 1.1;
+    box-shadow: 0 0 10px 2px cyan;
+    background-color: black;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 400px;
+        font-size: 1.2em;
+    }
+}
+@media (max-width: 400px) {
+    .container {
+        width: 100%;
+        padding-inline: 10px;
+    }
+}
+@media (max-width: 300px) {
+    .container {
+        font-size: 1em;
+        padding-inline: 0;
+        word-wrap: break-word;
+    }
+}

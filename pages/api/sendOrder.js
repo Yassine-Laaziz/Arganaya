@@ -8,8 +8,8 @@ const sendOrder = async (req, res) => {
   try {
     connect()
     const { jwtToken } = parse(req.headers.cookie)
-    const { _id } = await verify(jwtToken, process.env.JWT_SECRET_KEY)
-    const user = await UserModel.findById(_id)
+    const { payload } = await verify(jwtToken, process.env.JWT_SECRET_KEY)
+    const user = await UserModel.findById(payload.id)
     if (!user || !user.verified) return res.status(400).end()
     const { fullName } = user
 

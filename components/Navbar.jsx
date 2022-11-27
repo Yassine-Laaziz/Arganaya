@@ -37,30 +37,28 @@ const Navbar = () => {
       <p className={styles.logo}>
         <Link href={`/`}>Arganaya</Link>
       </p>
-      <div className="middle">
-        <CgProfile
-          tabIndex="0"
-          className={styles.profileIcon}
-          onClick={(e) => handleClick(e)}
-        />
-        {display && (
-          <div className="modal" onClick={(e) => handleClick(e)}>
-            <div className={styles.profileList}>
-              {token ? (
-                <>
-                  {!token.verified && <Link href={"/Verify"}>Verify</Link>}
-                  <button onClick={() => handleLogout()}>Logout</button>
-                </>
-              ) : (
-                <>
-                  <Link href={"/Signup"}>Sign Up!</Link>
-                  <Link href={"/Login"}>Login!</Link>
-                </>
-              )}
-            </div>
+      <CgProfile
+        tabIndex="0"
+        className={styles.profileIcon}
+        onClick={(e) => handleClick(e)}
+      />
+      {display && (
+        <div className="modal" onClick={(e) => handleClick(e)}>
+          <div className={styles.profileList}>
+            {token ? (
+              <>
+                {!token.verified && <Link href={"/Verify"}>Verify</Link>}
+                <button onClick={() => handleLogout()}>Logout</button>
+              </>
+            ) : (
+              <>
+                <Link href={"/Signup"}>Sign Up!</Link>
+                <Link href={"/Login"}>Login!</Link>
+              </>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
       <button className={styles.cartIcon} onClick={() => setShowCart(true)}>
         <AiOutlineShopping />
         <span className={styles.cartItemQty}>{totalQuantities}</span>
