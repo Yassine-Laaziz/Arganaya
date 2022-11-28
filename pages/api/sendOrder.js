@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer"
 import { connect } from "../../lib/mongodb"
 import { parse } from "cookie"
-import UserModel from "../../models/Users"
 import { verify } from "../../lib/jwt"
 
 const sendOrder = async (req, res) => {
@@ -9,9 +8,9 @@ const sendOrder = async (req, res) => {
     connect()
     const { jwtToken } = parse(req.headers.cookie)
     const { payload } = await verify(jwtToken, process.env.JWT_SECRET_KEY)
-    const user = await UserModel.findById(payload.id)
-    if (!user || !user.verified) return res.status(400).end()
-    const { name } = user
+    const { verified, user } = payload
+    if (!verified) return res.status(400).end()
+    const { name, email } = user
 
     const { cleanedCart, userInfo } = req.body
     const totalPrice = cleanedCart.reduce(
@@ -37,9 +36,10 @@ const sendOrder = async (req, res) => {
       html: `
         <h2>User info</h2>
         <p>name: ${name}</p>
+        <p>Phone number: ${userInfo.phoneNumber}</p>
+        <p>email: ${email}</p>
         <p>address line 1: ${userInfo.addressLine1}</p>
         <p>address line 2: ${userInfo.addressLine2}</p>
-        <p>Phone number: ${userInfo.phoneNumber}</p>
         
         <h2>Orders</h2>
         ${cleanedCart?.map(
@@ -64,7 +64,6 @@ const sendOrder = async (req, res) => {
 
     res.status(200).send("email sent successfully!")
   } catch (error) {
-    console.log(error)
     res.status(400).send("we're unable to send email")
   }
 }

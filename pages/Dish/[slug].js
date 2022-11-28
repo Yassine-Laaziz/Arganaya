@@ -1,7 +1,7 @@
 import styles from "../../styles/Dish.module.css"
 import { urlFor, client } from "../../lib/client"
 import { Dish } from "../../components"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai"
 import { IoOptions } from "react-icons/io5"
 import { CgCloseR } from "react-icons/cg"
@@ -9,7 +9,7 @@ import { useStateContext } from "../../context/StateContext"
 import transpileValue from "../../lib/utils/transpileValue"
 
 const DishDetails = ({ dish, similiarDishes }) => {
-  const { images, name, description, perPiece, params, price } = dish
+  const { images, name, description, perPiece, params, price, slug } = dish
 
   let { options } = dish
   if (options) {
@@ -36,6 +36,17 @@ const DishDetails = ({ dish, similiarDishes }) => {
   const [priceState, setPriceState] = useState(
     options ? Object.values(options)[0] : price
   )
+
+  // useEffect is necessary here even if it seems weird, because i found a problem,
+  // Next-Js renders components in a different way, it persists states with the 
+  // same name between links, and that's a problem because i need multiple pages, so:
+  useEffect(() => {
+    setIndex(0)
+    setDisplayParams(false)
+    setChosenParams({})
+    setChosenOption(options ? Object.keys(options)[0] : "")
+    setPriceState(options ? Object.values(options)[0] : price)
+  }, [slug.current])
 
   const paramsChange = (e, param) => {
     const status = transpileValue(e.target.valueAsNumber, "toText")
@@ -69,7 +80,7 @@ const DishDetails = ({ dish, similiarDishes }) => {
         <div className={styles.imagesSection}>
           <img
             alt={`Arganaya ${name}`}
-            src={images && urlFor(images[index])}
+            src={images && urlFor(images[index || 0])}
             className={styles.dishDetailImage}
           />
           <div className={styles.smallImagesContainer}>

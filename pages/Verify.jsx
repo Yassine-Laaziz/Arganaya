@@ -20,7 +20,7 @@ const Verify = () => {
         .post(`/api/auth/verification/verify`, { emailToken })
         .then((res) => {
           setInfo(
-            res.data.message || {
+            res.data || {
               message: "Something went wrong please check the url",
               status: "Error",
             }

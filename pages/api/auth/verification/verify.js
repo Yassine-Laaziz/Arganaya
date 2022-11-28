@@ -23,18 +23,17 @@ const verificationPage = async (req, res) => {
         .status(200)
         .json({ message: "You're already verified!", status: "Success" })
 
-    await UserModel.create(user)
-
+    const newUser = await UserModel.create(user)
+    
     // updating token to include "verified: true", we'll use this in middleware
-    const { serialized } = await createToken({ user: true, verified: true })
+    const { serialized } = await createToken({ signedUp: true, verified: true, user: newUser })
     res.setHeader("Set-Cookie", serialized)
 
     res
       .status(200)
       .json({ message: "Email verified successfully!", status: "Success" })
-  } catch (error) {
-    res.status(400).json(
-      error || {
+  } catch (e) {
+    res.status(400).json({
         message:
           "Something went wrong, please do not modify the link, in case you don't have one click 'Resend' and check you email",
         status: "Error",
