@@ -23,8 +23,9 @@ const handler = async (req, res) => {
 
     // refreshing Token
     const { jwtToken, serialized } = await createToken({
-      id: user._id,
-      verified: user.verified,
+      signedUp: true,
+      verified: true,
+      user,
     })
 
     res.setHeader("Set-Cookie", serialized)

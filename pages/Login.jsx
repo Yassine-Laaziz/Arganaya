@@ -51,14 +51,14 @@ const Login = () => {
       <form className={styles.wrapper} onSubmit={handleSubmit}>
         <input
           placeholder="email"
-          onChange={(e) => handleChange("email", e, setData)}
+          onChange={(e) => handleChange("email", e)}
           type="email"
           pattern="[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
           required
         />
         <input
           placeholder="password"
-          onChange={(e) => handleChange("password", e, setData)}
+          onChange={(e) => handleChange("password", e)}
           type="password"
           required
         />
